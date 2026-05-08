@@ -1,0 +1,23 @@
+name: dc-starter
+topology:
+  nodes:
+    spine1:
+      kind: arista_ceos
+      image: ceos:latest
+    spine2:
+      kind: arista_ceos
+      image: ceos:latest
+    leaf1:
+      kind: arista_ceos
+      image: ceos:latest
+    leaf2:
+      kind: arista_ceos
+      image: ceos:latest
+
+  links:
+    # Leaf 1 Connections
+    - endpoints: ["leaf1:eth1", "spine1:eth1"]
+    - endpoints: ["leaf1:eth2", "spine2:eth1"]
+    # Leaf 2 Connections
+    - endpoints: ["leaf2:eth1", "spine1:eth2"]
+    - endpoints: ["leaf2:eth2", "spine2:eth2"]
