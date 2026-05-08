@@ -1,0 +1,28 @@
+name: arista-l2
+topology:
+  nodes:
+    sw1:
+      kind: arista_ceos
+      image: ceos:latest
+      env:
+        INTFTYPE: eth
+        ETBA: 1
+        SKIP_ZEROTOUCH_BARRED: 1
+    sw2:
+      kind: arista_ceos
+      image: ceos:latest
+      env:
+        INTFTYPE: eth
+        ETBA: 1
+        SKIP_ZEROTOUCH_BARRED: 1
+    pc1:
+      kind: linux
+      image: alpine:latest
+    pc2:
+      kind: linux
+      image: alpine:latest
+
+  links:
+    - endpoints: ["sw1:eth1", "sw2:eth1"]
+    - endpoints: ["sw1:eth2", "pc1:eth1"]
+    - endpoints: ["sw2:eth2", "pc2:eth1"]
