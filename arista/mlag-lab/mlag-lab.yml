@@ -1,0 +1,52 @@
+name: mlag-lab
+
+topology:
+  nodes:
+    # --- Spines ---
+    spine1:
+      kind: arista_ceos
+      image: ceos:latest
+      env:
+        INTFTYPE: eth
+        ETBA: 1
+
+    # --- Leafs (The MLAG Pair) ---
+    leaf1:
+      kind: arista_ceos
+      image: ceos:latest
+      env:
+        INTFTYPE: eth
+        ETBA: 1
+    
+    leaf2:
+      kind: arista_ceos
+      image: ceos:latest
+      env:
+        INTFTYPE: eth
+        ETBA: 1
+    
+    # --- End Hosts (Multi-homed) ---
+    host1:
+      kind: linux
+      image: alpine:latest
+    
+    host2:
+      kind: linux
+      image: alpine:latest
+    
+  links:
+    # MLAG Peer Link (Two links for redundancy)
+    - endpoints: ["leaf1:eth1", "leaf2:eth1"]
+    - endpoints: ["leaf1:eth2", "leaf2:eth2"]
+
+    # Uplinks to Spine1
+    - endpoints: ["leaf1:eth3", "spine1:eth1"]
+    - endpoints: ["leaf2:eth3", "spine1:eth2"]
+
+    # Dual-homed Host 1 (Connected to both Leafs)
+    - endpoints: ["host1:eth1", "leaf1:eth4"]
+    - endpoints: ["host1:eth2", "leaf2:eth4"]
+
+    # Dual-homed Host 2 (Connected to both Leafs)
+    - endpoints: ["host2:eth1", "leaf1:eth5"]
+    - endpoints: ["host2:eth2", "leaf2:eth5"]
