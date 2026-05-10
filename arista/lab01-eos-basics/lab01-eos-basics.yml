@@ -1,0 +1,85 @@
+# Topology:
+#
+#   [PC1] eth0 ---- eth1 [SW1] eth2 ---- eth1 [SW2] eth2 ---- eth0 [PC2]
+#
+#   SW1: Arista cEOS — 192.168.1.1/24 (Management)
+#   SW2: Arista cEOS — 192.168.1.2/24 (Management)
+#   PC1: Linux host  — 10.0.0.10/24
+#   PC2: Linux host  — 10.0.0.20/24
+#
+# Learning Objectives:
+#   1. Navigate Arista EOS CLI modes (User EXEC, Privileged EXEC, Global Config)
+#   2. Set hostname, management IP, banners, and aliases
+#   3. Verify LLDP neighbors between SW1 and SW2
+#   4. Observe ARP table population using PC1 and PC2
+#   5. Test ICMP reachability end-to-end (PC1 -> SW1 -> SW2 -> PC2)
+#   6. Use key EOS show commands: show version, show interfaces, show lldp neighbors
+# =============================================================================
+
+name: lab01-eos-basics
+
+topology:
+
+  kinds:
+    arista_ceos:
+      image: ceos:latest       # Update to your imported cEOS image tag e.g. ceos:4.32.0F
+
+  nodes:
+
+    # -------------------------------------------------------------------------
+    # SW1 — First Arista cEOS switch
+    # -------------------------------------------------------------------------
+    sw1:
+      kind: arista_ceos
+      labels:
+        role: switch
+        lab: lab01
+
+    # -------------------------------------------------------------------------
+    # SW2 — Second Arista cEOS switch
+    # -------------------------------------------------------------------------
+    sw2:
+      kind: arista_ceos
+      labels:
+        role: switch
+        lab: lab01
+
+    # -------------------------------------------------------------------------
+    # PC1 — Linux host simulating end-user device on the left
+    # -------------------------------------------------------------------------
+    pc1:
+      kind: linux
+      image: alpine:latest
+      exec:
+        # Assign IP to eth1 (connected to SW1) and add default route via SW1
+        - ip addr add 10.0.0.10/24 dev eth1
+        - ip link set eth1 up
+        - ip route add default via 10.0.0.1
+      labels:
+        role: host
+        lab: lab01
+
+    # -------------------------------------------------------------------------
+    # PC2 — Linux host simulating end-user device on the right
+    # -------------------------------------------------------------------------
+    pc2:
+      kind: linux
+      image: alpine:latest
+      exec:
+        # Assign IP to eth1 (connected to SW2) and add default route via SW2
+        - ip addr add 10.0.0.20/24 dev eth1
+        - ip link set eth1 up
+        - ip route add default via 10.0.0.1
+      labels:
+        role: host
+        lab: lab01
+
+  links:
+    # PC1 eth1 <---> SW1 Ethernet1
+    - endpoints: ["pc1:eth1", "sw1:eth1"]
+
+    # SW1 Ethernet2 <---> SW2 Ethernet1  (trunk link between switches)
+    - endpoints: ["sw1:eth2", "sw2:eth1"]
+
+    # SW2 Ethernet2 <---> PC2 eth1
+    - endpoints: ["sw2:eth2", "pc2:eth1"]

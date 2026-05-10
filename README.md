@@ -18,11 +18,13 @@ The lab is organized by vendor, reflecting the specific industry sectors where e
   - Focus: ISP-grade routing and Service Provider architectures.
   - Objective: Exploring SR Linux for high-scale peering, MPLS, and carrier-grade connectivity.
 
-## Featured Lab: Arista DC Leaf-Spine
-My current primary focus is on Arista EOS for Data Center environments.
-- **Architecture:** 2-Spine / 2-Leaf Layer 3 Fabric.
-- **Control Plane:** eBGP with ECMP (Equal-Cost Multi-Pathing) enabled.
-- **Verification:** Utilizing `show ip bgp summary` and `show ip route` to validate fabric health.
+## Featured Lab: Arista MLAG (Multi-Chassis Link Aggregation) Lab
+
+My current primary focus is on Arista EOS for Data Center environments with Layer 2 High Availability.
+- **Architecture:** 1-Spine / 2-Leaf MLAG setup with dual-homed hosts.
+- **Control Plane:** MLAG Peer-Link and Control Plane for redundancy without STP.
+- **Features:** Dual-homing for Linux hosts using LACP Port-Channels, MLAG Peer-Link using Port-Channel.
+- **Verification:** Utilizing `show mlag`, `show mlag config-sanity`, `show port-channel summary`, and `show lldp neighbors` to validate redundancy and connectivity.
 
 ## Toolchain
 - **[Containerlab](https://containerlab.dev):** Orchestration for containerized network topologies.
