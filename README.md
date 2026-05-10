@@ -19,7 +19,7 @@ The lab is organized by vendor, reflecting the specific industry sectors where e
   - Objective: Exploring SR Linux for high-scale peering, MPLS, and carrier-grade connectivity.
 
 ## Featured Lab: Arista DC Leaf-Spine
-My current primary focus is on Arista EOS for Data Center environments to prepare for Technical Support Engineering (TSE) scenarios.
+My current primary focus is on Arista EOS for Data Center environments.
 - **Architecture:** 2-Spine / 2-Leaf Layer 3 Fabric.
 - **Control Plane:** eBGP with ECMP (Equal-Cost Multi-Pathing) enabled.
 - **Verification:** Utilizing `show ip bgp summary` and `show ip route` to validate fabric health.
