@@ -9,8 +9,6 @@ This repository documents a structured, protocol-by-protocol approach to network
 
 The focus is on **depth over breadth**: each lab isolates a specific technology, builds it from scratch, breaks it deliberately, and troubleshoots it systematically. Configurations, topology files, and observations are all committed alongside each lab so the learning is reproducible and shareable.
 
----
-
 ## Lab Environment
 
 | Tool | Purpose |
@@ -21,8 +19,6 @@ The focus is on **depth over breadth**: each lab isolates a specific technology,
 | Arista cEOS | Containerized Arista EOS — full-featured, lightweight |
 | Alpine Linux | Lightweight host containers for end-to-end traffic testing |
 
----
-
 ## Repository Structure
 
 ```
@@ -31,8 +27,6 @@ my-labs/
 ├── cisco/           # Enterprise & Campus networking (Cisco IOS)
 └── nokia/           # Service Provider networking (Nokia SR Linux)
 ```
-
----
 
 ## Arista EOS Lab Series
 
@@ -52,8 +46,6 @@ The Arista series follows a progressive 12-lab curriculum covering every major p
 | 10 | High Availability | QoS, Flow Control, VARP/VRRP, LACP | 🔲 Upcoming |
 | 11 | Multicast | IGMP, PIM Sparse & Dense Mode | 🔲 Upcoming |
 | 12 | Data Centre Fabric | Spine-Leaf, MLAG, VXLAN/EVPN, BGP Underlay | 🔲 Upcoming |
-
----
 
 ## Arista EOS — Lab 01: EOS Basics
 
@@ -76,13 +68,9 @@ The first lab establishes foundational familiarity with Arista EOS before moving
 - Core show commands: `show version`, `show interfaces`, `show lldp neighbors`, `show arp`, `show ip route`
 - Deliberate fault injection and troubleshooting scenarios
 
----
-
 ## Cisco IOS Lab Series
 
 *Coming soon — Enterprise campus and WAN protocols.*
-
----
 
 ## Nokia SR Linux Lab Series
 
