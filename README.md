@@ -35,7 +35,7 @@ The Arista series follows a progressive 12-lab curriculum covering every major p
 | # | Lab | Protocols / Features | Status |
 |---|-----|----------------------|--------|
 | 01 | EOS Basics | CLI, Management, LLDP, ARP, ICMP | ✅ Complete |
-| 02 | Layer 2 Switching | VLANs, STP, RSTP, MSTP | 🔲 Upcoming |
+| 02 | Layer 2 Switching | VLANs, STP, RSTP, MSTP | ✅ Complete |
 | 03 | OSPF | Single-area, Multi-area, Troubleshooting | 🔲 Upcoming |
 | 04 | BGP | eBGP, iBGP, Attributes, Filtering, Communities | 🔲 Upcoming |
 | 05 | Redistribution | RIP, OSPF↔BGP↔RIP redistribution | 🔲 Upcoming |
@@ -46,27 +46,6 @@ The Arista series follows a progressive 12-lab curriculum covering every major p
 | 10 | High Availability | QoS, Flow Control, VARP/VRRP, LACP | 🔲 Upcoming |
 | 11 | Multicast | IGMP, PIM Sparse & Dense Mode | 🔲 Upcoming |
 | 12 | Data Centre Fabric | Spine-Leaf, MLAG, VXLAN/EVPN, BGP Underlay | 🔲 Upcoming |
-
-## Arista EOS — Lab 01: EOS Basics
-
-**Path:** `arista/lab01-eos-basics/`
-
-The first lab establishes foundational familiarity with Arista EOS before moving into protocol-specific work.
-
-**Topology:**
-```
-[PC1] ── Ethernet1 ──[SW1]── Ethernet2 ── Ethernet1 ──[SW2]── Ethernet2 ──[PC2]
-10.0.0.10/24         10.0.0.1/24  10.1.0.1/30   10.1.0.2/30  10.0.0.1/24  10.0.0.20/24
-```
-
-**Covers:**
-- EOS CLI modes and navigation (User EXEC, Privileged EXEC, Global Config)
-- Interface configuration and verification
-- LLDP neighbour discovery between SW1 and SW2
-- ARP table population and inspection
-- End-to-end ICMP reachability testing (PC1 → SW1 → SW2 → PC2)
-- Core show commands: `show version`, `show interfaces`, `show lldp neighbors`, `show arp`, `show ip route`
-- Deliberate fault injection and troubleshooting scenarios
 
 ## Cisco IOS Lab Series
 
