@@ -1,5 +1,5 @@
 # Lab 02 — VLANs, STP, RSTP, and MSTP
-**Topics:** Layer 2 Switching, VLAN Segmentation, STP, RSTP, MSTP  
+**Topics:** Layer 2 Switching - VLAN Segmentation, STP, RSTP, MSTP  
 **Platform:** ContainerLab + Arista cEOS  
 **Repo:** https://github.com/baltejgiri/my-labs  
 **Reference:** [Arista EOS Spanning Tree Protocol](https://www.arista.com/en/um-eos/eos-spanning-tree-protocol)
