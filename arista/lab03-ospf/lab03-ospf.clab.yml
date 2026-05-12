@@ -16,31 +16,47 @@
 #  IP Addressing: R1 Lo0: 1.1.1.1/32 R1-R2 link: 10.0.12.0/30 R2 Lo0: 2.2.2.2/32 R2-R3 link: 10.0.23.0/30 R3 Lo0: 3.3.3.3/32 R3-R4 link: 10.0.34.0/30 R4 Lo0: 4.4.4.4/32 PC1: 
 #   192.168.1.10/24 GW: 192.168.1.1 (R1 Ethernet1) PC2: 192.168.4.10/24 GW: 192.168.4.1 (R4 Ethernet1)
 # =============================================================================
-name: lab03-ospf topology: kinds: arista_ceos: image: ceos:latest nodes:
-    # ------------------------------------------------------------------------- R1 — Internal Router, Area 0 
-    # -------------------------------------------------------------------------
-    r1: kind: arista_ceos labels: role: internal-router area: "0" lab: lab03
-    # ------------------------------------------------------------------------- R2 — Internal Router, Area 0 (DR/BDR election point on broadcast segment) 
-    # -------------------------------------------------------------------------
-    r2: kind: arista_ceos labels: role: internal-router area: "0" lab: lab03
-    # ------------------------------------------------------------------------- R3 — ABR (Area Border Router) connecting Area 0 and Area 1 
-    # -------------------------------------------------------------------------
-    r3: kind: arista_ceos labels: role: abr area: "0,1" lab: lab03
-    # ------------------------------------------------------------------------- R4 — Internal Router, Area 1 
-    # -------------------------------------------------------------------------
-    r4: kind: arista_ceos labels: role: internal-router area: "1" lab: lab03
-    # ------------------------------------------------------------------------- PC1 — Host behind R1 -------------------------------------------------------------------------
-    pc1: kind: linux image: alpine:latest exec: - ip addr add 192.168.1.10/24 dev eth1 - ip link set eth1 up - ip route add default via 192.168.1.1 labels: role: host lab: lab03
-    # ------------------------------------------------------------------------- PC2 — Host behind R4 -------------------------------------------------------------------------
-    pc2: kind: linux image: alpine:latest exec: - ip addr add 192.168.4.10/24 dev eth1 - ip link set eth1 up - ip route add default via 192.168.4.1 labels: role: host lab: lab03 
+name: lab03-ospf
+
+topology:
+
+  kinds:
+    arista_ceos:
+      image: ceos:latest
+
+  nodes:
+
+    r1:
+      kind: arista_ceos
+
+    r2:
+      kind: arista_ceos
+
+    r3:
+      kind: arista_ceos
+
+    r4:
+      kind: arista_ceos
+
+    pc1:
+      kind: linux
+      image: alpine:latest
+      exec:
+        - ip addr add 192.168.1.10/24 dev eth1
+        - ip link set eth1 up
+        - ip route add default via 192.168.1.1
+
+    pc2:
+      kind: linux
+      image: alpine:latest
+      exec:
+        - ip addr add 192.168.4.10/24 dev eth1
+        - ip link set eth1 up
+        - ip route add default via 192.168.4.1
+
   links:
-    # PC1 --- R1
     - endpoints: ["pc1:eth1", "r1:eth1"]
-    # R1 --- R2 (Area 0 backbone link)
     - endpoints: ["r1:eth2", "r2:eth1"]
-    # R2 --- R3 (Area 0 backbone link)
     - endpoints: ["r2:eth2", "r3:eth1"]
-    # R3 --- R4 (Area 1 link — R3 is ABR)
     - endpoints: ["r3:eth2", "r4:eth1"]
-    # R4 --- PC2
     - endpoints: ["r4:eth2", "pc2:eth1"]
