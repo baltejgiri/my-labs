@@ -36,7 +36,7 @@ The Arista series follows a progressive 12-lab curriculum covering every major p
 |---|-----|----------------------|--------|
 | 01 | EOS Basics | CLI, Management, LLDP, ARP, ICMP | ✅ Complete |
 | 02 | Layer 2 Switching | VLANs, STP, RSTP, MSTP | ✅ Complete |
-| 03 | OSPF | Single-area, Multi-area, Troubleshooting | 🔲 Upcoming |
+| 03 | OSPF | Single-area, Multi-area, Troubleshooting | ✅ Compeleted |
 | 04 | BGP | eBGP, iBGP, Attributes, Filtering, Communities | 🔲 Upcoming |
 | 05 | Redistribution | RIP, OSPF↔BGP↔RIP redistribution | 🔲 Upcoming |
 | 06 | VRF | VRF-Lite, Route Leaking | 🔲 Upcoming |
