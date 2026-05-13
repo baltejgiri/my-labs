@@ -8,43 +8,67 @@
     {
       "id": "r1",
       "position": {
-        "x": 180,
-        "y": 340
+        "x": -400,
+        "y": 80
+      },
+      "geoCoordinates": {
+        "lat": 46.283928,
+        "lng": 17.502012
       }
     },
     {
       "id": "r2",
       "position": {
-        "x": 340,
-        "y": 340
+        "x": -140,
+        "y": 80
+      },
+      "geoCoordinates": {
+        "lat": 50.476305,
+        "lng": 12.63369
       }
     },
     {
       "id": "r3",
       "position": {
-        "x": 500,
-        "y": 340
+        "x": 580,
+        "y": 80
+      },
+      "geoCoordinates": {
+        "lat": 48.856613,
+        "lng": 2.352222
       }
     },
     {
       "id": "r4",
       "position": {
-        "x": 660,
-        "y": 340
+        "x": 880,
+        "y": 80
+      },
+      "geoCoordinates": {
+        "lat": 51.604333,
+        "lng": -0.023769
       }
     },
     {
       "id": "pc1",
       "position": {
-        "x": 0,
-        "y": 340
+        "x": -680,
+        "y": 80
+      },
+      "geoCoordinates": {
+        "lat": 47.946753,
+        "lng": 37.772081
       }
     },
     {
       "id": "pc2",
       "position": {
-        "x": 800,
-        "y": 340
+        "x": 1120,
+        "y": 80
+      },
+      "geoCoordinates": {
+        "lat": 54.281932,
+        "lng": 39.663011
       }
     }
   ],
