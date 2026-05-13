@@ -174,7 +174,7 @@ Observe and manipulate DR/BDR election on the R1↔R2 link.
 - Note which router is DR and which is BDR — record the Router IDs
 - On R1: increase the OSPF interface priority to 200 on Ethernet2
 - Observe: does the DR change immediately? Why or why not?
-- Clear the OSPF process on both R1 and R2 to force a re-election: `clear ip ospf process`
+- Clear the OSPF process on both R1 and R2 to force a re-election: `clear ip ospf 1 neighbor *`. Check document in reference for full defination of this command.
 - Verify R1 is now DR using `show ip ospf interface Ethernet2`
 - On R2: set OSPF priority to 0 on Ethernet1 — what does priority 0 mean?
 - Clear OSPF process again and verify R2 is never elected DR
