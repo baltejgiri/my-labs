@@ -2,13 +2,13 @@
 
 ## Topology
 
-![Lab 03b - OSPF Topology](arista/lab03b-ospf/lab03b-ospf.clab.png)
+![Lab 03b - OSPF Topology](/arista/lab03b-ospf/lab03b-ospf.clab.png)
 
 ---
 
 # Overview
 
-This lab demonstrate the OSPF protocol in multiarea setup. This lab is created using Arista cEOS image on containerlab. Yaml file [Lab03b-ospf](/arista/lab03b-ospf/lab03b-ospf.clab.yml) contains the template for the network topology definding nodes, 
+This lab demonstrate the OSPF protocol in multiarea setup. This lab is created using Arista cEOS image on containerlab. Yaml file [lab03b-ospf](/arista/lab03b-ospf/lab03b-ospf.clab.yml) contains the template for the network topology definding nodes, 
 
 Directory [Configs](/arista/lab03b-ospf/configs) contains the two states of configuration **baseconfig** and **ospf configured**. Baseconfig.cfg for R1-R4 snapshots were taken before configuring the ospf configuration and ospfconfigured.cfg snapshots were taken after configuring ospf.
 
