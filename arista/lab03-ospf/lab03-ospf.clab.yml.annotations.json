@@ -30,7 +30,7 @@
     {
       "id": "r3",
       "position": {
-        "x": 580,
+        "x": 380,
         "y": 80
       },
       "geoCoordinates": {
@@ -41,7 +41,7 @@
     {
       "id": "r4",
       "position": {
-        "x": 880,
+        "x": 600,
         "y": 80
       },
       "geoCoordinates": {
@@ -52,8 +52,8 @@
     {
       "id": "pc1",
       "position": {
-        "x": -680,
-        "y": 80
+        "x": -800,
+        "y": 100
       },
       "geoCoordinates": {
         "lat": 47.946753,
@@ -63,8 +63,8 @@
     {
       "id": "pc2",
       "position": {
-        "x": 1120,
-        "y": 80
+        "x": 880,
+        "y": 100
       },
       "geoCoordinates": {
         "lat": 54.281932,
