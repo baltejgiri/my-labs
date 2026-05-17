@@ -1,9 +1,9 @@
 # Lab 03b — OSPF Multi-Area
 
-**Topics:** Multi-area OSPF, ABR roles, inter-area routing
-**Author:** Baltej Giri
-**Repo:** [https://github.com/baltejgiri/my-labs](https://github.com/baltejgiri/my-labs)  
-**Reference:** [Arista EOS OSPF Documentation](https://www.arista.com/en/um-eos/eos-open-shortest-path-first-version-2)
+- **Topics:** Multi-area OSPF, ABR roles, inter-area routing
+- **Author:** Baltej Giri
+- **Repo:** [https://github.com/baltejgiri/my-labs](https://github.com/baltejgiri/my-labs)
+- **Reference:** [Arista EOS OSPF Documentation](https://www.arista.com/en/um-eos/eos-open-shortest-path-first-version-2)
 
 ---
 

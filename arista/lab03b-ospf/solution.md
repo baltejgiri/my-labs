@@ -13,7 +13,9 @@ This lab demonstrate the OSPF protocol in multiarea setup. This lab is created u
 Directory [Configs](/arista/lab03b-ospf/configs) contains the two states of configuration **baseconfig** and **ospf configured**. Baseconfig.cfg for R1-R4 snapshots were taken before configuring the ospf configuration and ospfconfigured.cfg snapshots were taken after configuring ospf.
 
 ## Problem
-Which path R3 takes to route traffic to destination address 11.1.1.1?
+- What path does R3 reach the 11.1.1.0/30 network in Area 2?
+-  Why can't R3 directly send traffic to R4?
+- What are the roles of each router in this topology?
 
 ## Solution
 
