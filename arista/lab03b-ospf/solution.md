@@ -21,7 +21,7 @@ In order to understand which path R3 takes to route traffic to network address i
 
 ### Step 1.
 
-"On R3, the ```show ip route``` command shows that the destination network 11.1.1.0/30 is learned via OSPF Inter-area (O IA). It is accessible through the next-hop IP address 13.1.1.1 on interface Ethernet1.
+On R3, the ```show ip route``` command shows that the destination network 11.1.1.0/30 is learned via OSPF Inter-area (O IA). It is accessible through the next-hop IP address 13.1.1.1 on interface Ethernet1.
 
 ```bash
 R3#show ip route
@@ -93,7 +93,7 @@ Interface Ethernet1 detected 1 LLDP neighbors:
 ```
 ### Step 2.
 
-"On R1, the ```show ip route``` command reveals a routing table entry for network 11.1.1.0/30. This network is learned via OSPF Inter-area (O IA) and is reachable through the next-hop IP address 10.1.1.2 on interface Ethernet1.
+On R1, the ```show ip route``` command reveals a routing table entry for network 11.1.1.0/30. This network is learned via OSPF Inter-area (O IA) and is reachable through the next-hop IP address 10.1.1.2 on interface Ethernet1.
 
 ```bash
 R1#show ip route
@@ -212,7 +212,7 @@ We do not needs to use ```show lldp neighbor``` command since packet won't be go
 
 ## Validation
 
-Traceroute to the IP address 11.1.1.1 from R3, sourcing from both interfaces of R3 results the same output - matches to the explaination I wrote in three steps above.
+Traceroute to the IP address 11.1.1.1 from R3, sourcing from both interfaces of R3 results the same output - matches to the explaination I wrote in previous steps.
 
 ```bash
 R3#traceroute 11.1.1.1
@@ -232,7 +232,6 @@ traceroute to 11.1.1.1 (11.1.1.1), 30 hops max, 60 byte packets
  1  13.1.1.1 (13.1.1.1)  0.138 ms  0.033 ms  0.032 ms
  2  10.1.1.2 (10.1.1.2)  1.780 ms  2.744 ms  3.205 ms
  3  11.1.1.1 (11.1.1.1)  4.247 ms  4.556 ms  5.948 ms
-R3#
 ```
 
 ## Why R3 can't route R4 directly?
@@ -455,4 +454,4 @@ Maximum number of LSA allowed 12000
 
 # Summary
 
-The only path for R3 to reach network 11.1.1.0/30 is R3 > R1 > R2 > R4. This is because OSPF requires all non-backbone areas to connect to the backbone (Area 0) to pass traffic between each other, preventing routing loops.
+The only path for R3 to reach network 11.1.1.0/30 is R3 > R1 > R2. This is because OSPF requires all non-backbone areas to connect to the backbone (Area 0) to pass traffic between each other, preventing routing loops.

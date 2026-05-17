@@ -30,22 +30,18 @@ my-labs/
 
 ## Arista EOS Lab Series
 
-The Arista series follows a progressive 12-lab curriculum covering every major protocol and feature area of Arista EOS, from foundational CLI skills through full data centre fabric design.
+## Arista EOS Lab Series
+
+The Arista series follows a progressive lab curriculum covering every major protocol and feature area of Arista EOS, from foundational CLI skills through data centre fabric design.
 
 | # | Lab | Protocols / Features | Status |
 |---|-----|----------------------|--------|
 | 01 | EOS Basics | CLI, Management, LLDP, ARP, ICMP | ✅ Complete |
 | 02 | Layer 2 Switching | VLANs, STP, RSTP, MSTP | ✅ Complete |
-| 03 | OSPF | Single-area, Multi-area, Troubleshooting | ✅ Compeleted |
-| 04 | BGP | eBGP, iBGP, Attributes, Filtering, Communities | 🔲 Upcoming |
-| 05 | Redistribution | RIP, OSPF↔BGP↔RIP redistribution | 🔲 Upcoming |
-| 06 | VRF | VRF-Lite, Route Leaking | 🔲 Upcoming |
-| 07 | MPLS | LDP, L3VPN Basics | 🔲 Upcoming |
-| 08 | Services | DHCP, NAT, ACLs | 🔲 Upcoming |
-| 09 | Management Plane | AAA/TACACS+, SNMP, sFlow | 🔲 Upcoming |
-| 10 | High Availability | QoS, Flow Control, VARP/VRRP, LACP | 🔲 Upcoming |
-| 11 | Multicast | IGMP, PIM Sparse & Dense Mode | 🔲 Upcoming |
-| 12 | Data Centre Fabric | Spine-Leaf, MLAG, VXLAN/EVPN, BGP Underlay | 🔲 Upcoming |
+| 03 | OSPF | Single-area, Multi-area, Troubleshooting | ✅ Complete |
+| 03b | OSPF Multi-Area Packet Flow | ABR roles, LSA Types, Inter-area routing, Packet flow analysis | ✅ Complete |
+| 04 | BGP | eBGP, iBGP, Attributes, Filtering, Communities | 🔲 Planned |
+| 05 | VXLAN and EVPN | Spine-Leaf, MLAG, VXLAN, EVPN, BGP underlay | 🔲 Planned |
 
 ## Cisco IOS Lab Series
 
