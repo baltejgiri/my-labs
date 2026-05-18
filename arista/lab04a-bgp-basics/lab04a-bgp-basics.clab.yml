@@ -12,8 +12,6 @@ topology:
       startup-config: |
         hostname R1
         !
-        service routing protocols model multi-agent
-        !
         spanning-tree mode none
         ip routing
         !
@@ -25,23 +23,12 @@ topology:
            no switchport
            ip address 10.12.1.1/24
         !
-        router bgp 65100
-           router-id 192.168.1.1
-           neighbor 10.12.1.2 remote-as 65200
-           neighbor 10.12.1.2 description R2-AS65200
-           !
-           address-family ipv4
-              neighbor 10.12.1.2 activate
-              network 192.168.1.1/32
-        !
         end
 
     r2:
       kind: arista_ceos
       startup-config: |
         hostname R2
-        !
-        service routing protocols model multi-agent
         !
         spanning-tree mode none
         ip routing
@@ -53,15 +40,6 @@ topology:
            description R2-to-R1-eBGP
            no switchport
            ip address 10.12.1.2/24
-        !
-        router bgp 65200
-           router-id 192.168.2.2
-           neighbor 10.12.1.1 remote-as 65100
-           neighbor 10.12.1.1 description R1-AS65100
-           !
-           address-family ipv4
-              neighbor 10.12.1.1 activate
-              network 192.168.2.2/32
         !
         end
 
