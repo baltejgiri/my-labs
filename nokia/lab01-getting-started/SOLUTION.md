@@ -79,7 +79,7 @@ Based on the state datastore output above, is `ethernet-1/1` administratively up
 
 * **Admin state:** up
 * **Oper state:** N/A
-* **Distinction:** No distinction between two
+* **Distinction:** Admin state is what is defined manually it's either disabled or enabled however Oper state is what data plant observes, data plane determines the hardware link detection and other vaiables like protocol or peer state on the link.
 
 ## Section 2: Transactional Identity & State Preparation
 
@@ -97,7 +97,7 @@ A:sw1# enter candidate private
 
 --{ + candidate private private-admin }--[  ]--
 ```
-* **Meaning of `+`:** Diff
+* **Meaning of `+`:** Symbol + means there are uncommited changes in the candiadate tha differ from running datastore.
 
 ### Question 2.3
 What commands did you use to set the system hostname on each node?
@@ -157,62 +157,20 @@ Why is binding the subinterface into a network-instance required before the inte
 ### Question 4.1
 What command performs a structural validation of your candidate changes without committing them?
 
-* **Command:** diff
+* **Command:** commit validate
 * **Validation output:** I used diff command while in the ```private candidate``` datastore.
 ```text
-A:sw1# diff
-      interface ethernet-1/1 {
-+         subinterface 0 {
-+             ipv4 {
-+                 admin-state enable
-+                 address 10.10.12.1/24 {
-+                 }
-+             }
-+             ipv6 {
-+                 admin-state enable
-+                 address 2001:db8:12::1/64 {
-+                 }
-+             }
-+         }
-+     }
-+     network-instance defaul {
-+         interface ethernet-1/1.0 {
-+         }
-      }
-      system {
-          name {
-+             host-name SROS-LAB-SW1
-          }
-      }
+A:sw1# commit validate
+All changes are valid.
 
---{ * candidate private private-admin }--[  ]--
+--{ +* candidate private private-admin }--[  ]--
 ```
 
 ```text
-A:sw2# diff
-      interface ethernet-1/1 {
-+         subinterface 0 {
-+             ipv4 {
-+                 address 10.10.12.2/24 {
-+                 }
-+             }
-+             ipv6 {
-+                 address 200:db8:12::2/64 {
-+                 }
-+             }
-+         }
-+     }
-+     network-instance default {
-+         interface ethernet-1/1.0 {
-+         }
-      }
-      system {
-          name {
-+             host-name SROS-LAB-SW2
-          }
-      }
+A:sw1# commit validate
+All changes are valid.
 
---{ * candidate private private-admin }--[  ]--
+--{ +* candidate private private-admin }--[  ]--
 ```
 
 ### Question 4.2
@@ -413,89 +371,50 @@ Use this section to document any misconfigurations encountered during the lab, t
 
 | Step      | Issue observed                      | Root cause | Fix applied |
 |------|---------------|------------|-------------|
-| 1         | Subinterface 0 on Sw2 showing donw  | Subinterface was not enabled | enabled subinterface, ipv4 and ipv6 for it as well |
+| 1         | Subinterface 0 on Sw2 showing down  | Subinterface was not enabled | admin-state enable was applied on sw2's sub-interface to fix the issue. |
 | 2         | Incorrect IPv6 address on Sw2       | A typo in entering the IPv6 address on Sw2's subinterface | deleted the incorrect ip address and added the correct |
 
 ---
 
-## Grader Feedback
+## Grader Feedback — Round 2
 
-**Grade: B — 78/100**
+**Grade: B+ — 87/100** *(revised from B / 78)*
 
-Lab is functionally complete — dual-stack pings succeed, commit workflow correct, all IP addresses and commands are right. The following gaps need to be understood and corrected before moving to lab02.
-
----
-
-### Issue 1 — Q1.5: Admin vs Oper state distinction is wrong
-
-You wrote: *"No distinction between two."*
-
-This is incorrect. These are two independent state machines:
-
-- **Admin state** (`admin-state enable/disable`) — what you configured. You control it. Setting `admin-state disable` shuts the interface regardless of physical state.
-- **Oper state** — what the data plane reports. Determined by hardware link detection, protocol negotiation, and whether the peer is up. You cannot set it directly.
-
-An interface can be **admin up but oper down** (e.g., cable unplugged, peer container down). In this lab, before any config, SR Linux's virtual interfaces default to `admin-state enable`, which is why the interface showed as "up" immediately — there was nothing to observe as "down." The correct answer was to note that admin-state was already `enable` by default, and oper-state was `up` because the back-to-back link between sw1 and sw2 was active.
+Three of the five original issues were fixed. Two remain open. See status below.
 
 ---
 
-### Issue 2 — Q2.2: `+` symbol explanation too vague
+### Issue 1 — Q1.5 Admin/Oper state distinction: FIXED (with one item still wrong)
 
-You wrote: *"Diff"*
-
-The `+` in `--{ * candidate private private-admin }--` (or `--{ + candidate ... }--`) means: **there are uncommitted changes in this candidate session that differ from the running datastore.** The `*` and `+` are both used; `*` typically appears after you make changes within a session. The important conceptual point is that changes are isolated in the candidate until you `commit` — the `+` is a visual signal that your staging area diverges from the live config.
+The distinction explanation is now correct — well done. However, **Oper state is still listed as "N/A"**. The pre-config output in Q1.4 clearly reads `ethernet-1/1 is up` — that line reflects oper state. The correct answer is `up`, not N/A.
 
 ---
 
-### Issue 3 — Q4.1: `diff` is NOT the validation command
+### Issue 2 — Q2.2 `+` symbol explanation: FIXED
 
-You answered `diff` for "structural validation without committing."
-
-The correct SR Linux command is:
-
-```
-validate
-```
-
-- `diff` — shows a line-by-line delta between candidate and running. Useful for review, but does **not** validate against YANG model constraints.
-- `validate` — runs a structural check of the candidate against the model. Catches syntax errors, missing mandatory fields, and constraint violations **without committing**.
-
-Using `diff` before committing is good practice, but it is a different step from validation.
+Correct. (Minor typos — "uncommited", "candiadate", "tha" — worth cleaning up for readability.)
 
 ---
 
-### Issue 4 — RCA gap: sw1 network-instance typo not documented
+### Issue 3 — Q4.1 Validation command: FIXED
 
-Your diff in Q4.1 shows:
+`commit validate` is correct and the output `All changes are valid.` confirms it ran. Two small cleanup items remain:
 
-```
-+     network-instance defaul {
-```
-
-This was committed. Evidence in your own outputs:
-- Q4.3 sw1: `* Name: defaul (default)` instead of `default (default)`
-- Q4.4 sw1: `show network-instance defaul route-table`
-- Q4.5 sw1: `ping network-instance defaul 10.10.12.2`
-
-sw1 is bound to a custom network-instance named `defaul` (missing the trailing `t`) rather than the built-in `default`. Pings still work because the two nodes are directly connected at L3 and ARP resolves regardless, but the routing context is wrong — sw1's routes live in a user-created VRF, not the default instance.
-
-**Fix**: In candidate, delete the wrong binding and re-add it to the correct instance:
-
-```
-delete /network-instance defaul interface ethernet-1/1.0
-set /network-instance default interface ethernet-1/1.0
-commit stay
-```
-
-Add this to the RCA table.
+- The description text still reads *"I used diff command while in the private candidate datastore"* — this should be removed or replaced to match the updated command.
+- Both validation outputs show `A:sw1#` — the second block should show `A:sw2#`. Looks like a copy-paste that wasn't updated.
 
 ---
 
-### Issue 5 — sw2 diff missing `admin-state enable` for IPv4/IPv6
+### Issue 4 — RCA gap: `defaul` typo on sw1 — STILL OPEN
 
-sw1's diff in Q4.1 shows `admin-state enable` under both `ipv4` and `ipv6`. sw2's diff does not. Either:
+The `defaul` misconfiguration is visible in Q4.3, Q4.4, and Q4.5 outputs on sw1 and has not been added to the RCA table. The outputs themselves cannot be changed (they reflect what actually ran), but the RCA must document it. Add a row:
 
-- The `set interface ethernet-1/1 subinterface 0 ipv4 admin-state enable` was committed in a separate earlier transaction on sw2 (before the diff was captured), or
-- It was genuinely not run on sw2 and the subinterface still lacks explicit `admin-state enable`.
+| Step | Issue observed | Root cause | Fix applied |
+|------|----------------|------------|-------------|
+| 3 | sw1 bound to network-instance `defaul` instead of `default` | Typo when entering `set /network-instance default` — trailing `t` dropped | `delete /network-instance defaul interface ethernet-1/1.0` then `set /network-instance default interface ethernet-1/1.0` and `commit stay` |
 
-The RCA row 1 notes the subinterface was down on sw2 but the explanation is incomplete. Clarify in the RCA whether the `admin-state enable` on the subinterface was part of the fix, and whether it was committed in the same transaction shown in Q4.1 or a prior one.
+---
+
+### Issue 5 — sw2 diff missing `admin-state enable`: CLOSED
+
+RCA row 1 now states the fix clearly enough. Accepted.
