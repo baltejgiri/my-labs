@@ -1,12 +1,18 @@
 # Lab 01 Verification & Troubleshooting Log (TAC Engineering)
+
 Execute the following troubleshooting steps to verify structural integrity and data-plane 
 health across the link path. Fill out the console outputs and question blocks as you 
 discover the answers.
+
 ## Section 1: Command Line & Architecture Mechanics
+
 ### Question 1.1
-What explicit command is utilized to move your CLI profile out of the read-only 
-operational monitoring layer and into an active candidate transaction environment? * 
+What explicit command is utilized to move your CLI profile out of the read-only operational monitoring layer and into an active candidate transaction environment?
+
+
+
 **Answer:**
+
 ### Question 1.2
 Paste the exact text string displayed by the prompt after you enter the candidate data 
 store but before executing a write transaction. What does this string signify? * **Visual 
