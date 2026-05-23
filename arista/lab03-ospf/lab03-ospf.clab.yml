@@ -1,0 +1,249 @@
+# =============================================================================
+# Lab 03 — OSPF: Single-Area, Multi-Area, and Troubleshooting
+# Topics: OSPFv2, Router Types, LSA Types, ABR, Area Types, Troubleshooting
+# Author: Baltej Giri
+# Repo:   https://github.com/baltejgiri/my-labs
+# Ref:    https://www.arista.com/en/um-eos/eos-open-shortest-path-first-version-2
+# =============================================================================
+#
+# Topology:
+#
+#  [PC1]                                                          [PC2]
+#    |                                                              |
+#   eth1                                                          eth1
+#    |                                                              |
+#   R1(eth1)--eth2---(eth1)R2(eth2)---(eth1)R3(eth2)---(eth1)R4(eth2)
+#
+#  Area 0 (Backbone): R1 --- R2 --- R3
+#  Area 1 (Regular):  R3 --- R4
+#
+#  Router Roles:
+#    R1 — Internal Router (Area 0), connects PC1 subnet
+#    R2 — Internal Router (Area 0), DR/BDR election point
+#    R3 — ABR: connects Area 0 (eth1) and Area 1 (eth2)
+#    R4 — Internal Router (Area 1), connects PC2 subnet
+#
+#  IP Addressing:
+#    R1 Lo0:       1.1.1.1/32
+#    R1 eth1:      192.168.1.1/24   (PC1 gateway)
+#    R1 eth2:      10.0.12.1/30
+#    R2 Lo0:       2.2.2.2/32
+#    R2 eth1:      10.0.12.2/30
+#    R2 eth2:      10.0.23.1/30
+#    R3 Lo0:       3.3.3.3/32
+#    R3 eth1:      10.0.23.2/30
+#    R3 eth2:      10.0.34.1/30
+#    R4 Lo0:       4.4.4.4/32
+#    R4 eth1:      10.0.34.2/30
+#    R4 eth2:      192.168.4.1/24   (PC2 gateway)
+#    PC1:          192.168.1.10/24  GW: 192.168.1.1
+#    PC2:          192.168.4.10/24  GW: 192.168.4.1
+#
+#  Learning Objectives:
+#    1. Verify OSPF neighbour adjacency (show ip ospf neighbor)
+#    2. Understand DR/BDR election on R1-R2 broadcast segment
+#    3. Identify LSA types: Type 1 (Router), Type 2 (Network), Type 3 (Summary)
+#    4. Verify inter-area routing via ABR (R3)
+#    5. Ping PC1 to PC2 across areas
+#    6. Troubleshoot OSPF issues (see break/fix scenarios in comments below)
+#
+#  Key Verification Commands:
+#    show ip ospf neighbor
+#    show ip ospf database
+#    show ip ospf database summary
+#    show ip route ospf
+#    show ip ospf interface <intf>
+#
+#  Break/Fix Scenarios (manual — apply after lab is up):
+#    Scenario A — MTU mismatch:
+#      On R1 eth2: ip mtu 1400
+#      Expected:   R1-R2 neighbour stuck in Exstart/Exchange
+#      Fix:        ip mtu 1500 (or ip ospf mtu-ignore)
+#
+#    Scenario B — Area mismatch:
+#      On R2 eth2: router ospf 1 / network 10.0.23.0/30 area 1
+#      Expected:   R2-R3 neighbour fails (area mismatch)
+#      Fix:        network 10.0.23.0/30 area 0
+#
+#    Scenario C — Hello/Dead timer mismatch:
+#      On R3 eth1: ip ospf hello-interval 20
+#      Expected:   R2-R3 neighbour drops after dead interval
+#      Fix:        ip ospf hello-interval 10 (default)
+#
+#    Scenario D — Authentication mismatch:
+#      On R1 eth2: ip ospf authentication / ip ospf authentication-key arista
+#      Expected:   R1-R2 neighbour fails
+#      Fix:        Add matching auth on R2 eth1 or remove from R1
+# =============================================================================
+
+name: lab03-ospf
+
+topology:
+  kinds:
+    arista_ceos:
+      image: ceos:latest
+
+  nodes:
+
+    # -------------------------------------------------------------------------
+    # R1 — Internal Router, Area 0
+    # Connects: PC1 subnet (eth1), R2 (eth2)
+    # -------------------------------------------------------------------------
+    r1:
+      kind: arista_ceos
+      startup-config: |
+        hostname R1
+        !
+        spanning-tree mode none
+        !
+        interface Loopback0
+           ip address 1.1.1.1/32
+        !
+        interface Ethernet1
+           description PC1
+           no switchport
+           ip address 192.168.1.1/24
+        !
+        interface Ethernet2
+           description R1-to-R2
+           no switchport
+           ip address 10.0.12.1/30
+        !
+        router ospf 1
+           router-id 1.1.1.1
+           network 1.1.1.1/32 area 0.0.0.0
+           network 192.168.1.0/24 area 0.0.0.0
+           network 10.0.12.0/30 area 0.0.0.0
+           max-lsa 12000
+        !
+        end
+
+    # -------------------------------------------------------------------------
+    # R2 — Internal Router, Area 0
+    # Connects: R1 (eth1), R3 (eth2)
+    # DR/BDR election occurs on both point-to-point links
+    # -------------------------------------------------------------------------
+    r2:
+      kind: arista_ceos
+      startup-config: |
+        hostname R2
+        !
+        spanning-tree mode none
+        !
+        interface Loopback0
+           ip address 2.2.2.2/32
+        !
+        interface Ethernet1
+           description R2-to-R1
+           no switchport
+           ip address 10.0.12.2/30
+        !
+        interface Ethernet2
+           description R2-to-R3
+           no switchport
+           ip address 10.0.23.1/30
+        !
+        router ospf 1
+           router-id 2.2.2.2
+           network 2.2.2.2/32 area 0.0.0.0
+           network 10.0.12.0/30 area 0.0.0.0
+           network 10.0.23.0/30 area 0.0.0.0
+           max-lsa 12000
+        !
+        end
+
+    # -------------------------------------------------------------------------
+    # R3 — ABR (Area Border Router)
+    # Connects: R2/Area 0 (eth1), R4/Area 1 (eth2)
+    # Generates Type 3 Summary LSAs between areas
+    # -------------------------------------------------------------------------
+    r3:
+      kind: arista_ceos
+      startup-config: |
+        hostname R3
+        !
+        spanning-tree mode none
+        !
+        interface Loopback0
+           ip address 3.3.3.3/32
+        !
+        interface Ethernet1
+           description R3-to-R2-Area0
+           no switchport
+           ip address 10.0.23.2/30
+        !
+        interface Ethernet2
+           description R3-to-R4-Area1
+           no switchport
+           ip address 10.0.34.1/30
+        !
+        router ospf 1
+           router-id 3.3.3.3
+           network 3.3.3.3/32 area 0.0.0.0
+           network 10.0.23.0/30 area 0.0.0.0
+           network 10.0.34.0/30 area 0.0.0.1
+           max-lsa 12000
+        !
+        end
+
+    # -------------------------------------------------------------------------
+    # R4 — Internal Router, Area 1
+    # Connects: R3 (eth1), PC2 subnet (eth2)
+    # -------------------------------------------------------------------------
+    r4:
+      kind: arista_ceos
+      startup-config: |
+        hostname R4
+        !
+        spanning-tree mode none
+        !
+        interface Loopback0
+           ip address 4.4.4.4/32
+        !
+        interface Ethernet1
+           description R4-to-R3-Area1
+           no switchport
+           ip address 10.0.34.2/30
+        !
+        interface Ethernet2
+           description PC2
+           no switchport
+           ip address 192.168.4.1/24
+        !
+        router ospf 1
+           router-id 4.4.4.4
+           network 4.4.4.4/32 area 0.0.0.1
+           network 10.0.34.0/30 area 0.0.0.1
+           network 192.168.4.0/24 area 0.0.0.1
+           max-lsa 12000
+        !
+        end
+
+    # -------------------------------------------------------------------------
+    # PC1 — Alpine Linux host in 192.168.1.0/24
+    # -------------------------------------------------------------------------
+    pc1:
+      kind: linux
+      image: alpine:latest
+      exec:
+        - ip addr add 192.168.1.10/24 dev eth1
+        - ip link set eth1 up
+        - ip route add default via 192.168.1.1
+
+    # -------------------------------------------------------------------------
+    # PC2 — Alpine Linux host in 192.168.4.0/24
+    # -------------------------------------------------------------------------
+    pc2:
+      kind: linux
+      image: alpine:latest
+      exec:
+        - ip addr add 192.168.4.10/24 dev eth1
+        - ip link set eth1 up
+        - ip route add default via 192.168.4.1
+
+  links:
+    - endpoints: ["pc1:eth1",  "r1:eth1"]   # PC1 to R1
+    - endpoints: ["r1:eth2",   "r2:eth1"]   # R1-R2 Area 0
+    - endpoints: ["r2:eth2",   "r3:eth1"]   # R2-R3 Area 0
+    - endpoints: ["r3:eth2",   "r4:eth1"]   # R3-R4 Area 0/1 boundary (ABR)
+    - endpoints: ["r4:eth2",   "pc2:eth1"]  # R4 to PC2

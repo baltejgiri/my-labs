@@ -1,0 +1,145 @@
+# =============================================================================
+# Lab 02 — VLANs, STP, RSTP, and MSTP
+# Topics: Layer 2 Switching, VLAN Segmentation, Spanning Tree Protocols
+# Author: Baltej Giri
+# Repo:   https://github.com/baltejgiri/my-labs
+# Ref:    https://www.arista.com/en/um-eos/eos-spanning-tree-protocol
+# =============================================================================
+#
+# Topology:
+#
+#         [PC-10A]        [PC-20A]
+#            |                |
+#          eth1             eth1
+#           SW1 ----Et3---- SW2
+#           SW1 ----Et4---- SW2   (redundant uplinks — creates loop for STP)
+#          eth2             eth2
+#            \               /
+#             \             /
+#              SW3 (Root Bridge candidate)
+#             /    \
+#           eth1   eth2
+#        [PC-10B] [PC-20B]
+#
+# VLANs:
+#   VLAN 10 — 10.10.10.0/24  (e.g. Operations)
+#   VLAN 20 — 10.20.20.0/24  (e.g. Engineering)
+#
+# STP Progression (done manually via CLI tasks in README):
+#   Task 1: MSTP  — default on EOS, 2 instances (MST1=VLAN10, MST2=VLAN20)
+#   Task 2: RSTP  — rapid-pvst mode, observe convergence
+#   Task 3: STP   — classic 802.1D, observe slow convergence
+# =============================================================================
+
+name: lab02-l2-switching
+
+topology:
+
+  kinds:
+    arista_ceos:
+      image: ceos:latest
+
+  nodes:
+
+    # -------------------------------------------------------------------------
+    # SW1 — Distribution switch (left uplink)
+    # -------------------------------------------------------------------------
+    sw1:
+      kind: arista_ceos
+      labels:
+        role: distribution
+        lab: lab02
+
+    # -------------------------------------------------------------------------
+    # SW2 — Distribution switch (right uplink)
+    # -------------------------------------------------------------------------
+    sw2:
+      kind: arista_ceos
+      labels:
+        role: distribution
+        lab: lab02
+
+    # -------------------------------------------------------------------------
+    # SW3 — Core/Root switch (STP root bridge)
+    # -------------------------------------------------------------------------
+    sw3:
+      kind: arista_ceos
+      labels:
+        role: core
+        lab: lab02
+
+    # -------------------------------------------------------------------------
+    # PC-10A — VLAN 10 host on SW1
+    # -------------------------------------------------------------------------
+    pc10a:
+      kind: linux
+      image: alpine:latest
+      exec:
+        - ip addr add 10.10.10.10/24 dev eth1
+        - ip link set eth1 up
+        - ip route add default via 10.10.10.1
+      labels:
+        vlan: "10"
+        lab: lab02
+
+    # -------------------------------------------------------------------------
+    # PC-20A — VLAN 20 host on SW1
+    # -------------------------------------------------------------------------
+    pc20a:
+      kind: linux
+      image: alpine:latest
+      exec:
+        - ip addr add 10.20.20.10/24 dev eth1
+        - ip link set eth1 up
+        - ip route add default via 10.20.20.1
+      labels:
+        vlan: "20"
+        lab: lab02
+
+    # -------------------------------------------------------------------------
+    # PC-10B — VLAN 10 host on SW3
+    # -------------------------------------------------------------------------
+    pc10b:
+      kind: linux
+      image: alpine:latest
+      exec:
+        - ip addr add 10.10.10.20/24 dev eth1
+        - ip link set eth1 up
+        - ip route add default via 10.10.10.1
+      labels:
+        vlan: "10"
+        lab: lab02
+
+    # -------------------------------------------------------------------------
+    # PC-20B — VLAN 20 host on SW3
+    # -------------------------------------------------------------------------
+    pc20b:
+      kind: linux
+      image: alpine:latest
+      exec:
+        - ip addr add 10.20.20.20/24 dev eth1
+        - ip link set eth1 up
+        - ip route add default via 10.20.20.1
+      labels:
+        vlan: "20"
+        lab: lab02
+
+  links:
+    # --- SW1 access ports ---
+    - endpoints: ["pc10a:eth1", "sw1:eth1"]   # VLAN 10 access port
+    - endpoints: ["pc20a:eth1", "sw1:eth2"]   # VLAN 20 access port
+
+    # --- SW1 <-> SW3 trunk (redundant uplinks — STP will block one) ---
+    - endpoints: ["sw1:eth3", "sw3:eth1"]
+    - endpoints: ["sw1:eth4", "sw3:eth2"]
+
+    # --- SW2 <-> SW3 trunk ---
+    - endpoints: ["sw2:eth3", "sw3:eth3"]
+    - endpoints: ["sw2:eth4", "sw3:eth4"]
+
+    # --- SW1 <-> SW2 trunk (creates triangle loop with SW3) ---
+    - endpoints: ["sw1:eth5", "sw2:eth5"]
+
+    # --- SW3 access ports ---
+    - endpoints: ["pc10b:eth1", "sw3:eth5"]   # VLAN 10 access port
+    - endpoints: ["pc20b:eth1", "sw3:eth6"]   # VLAN 20 access port

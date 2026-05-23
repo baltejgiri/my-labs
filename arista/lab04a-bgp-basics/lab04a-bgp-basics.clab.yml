@@ -1,0 +1,47 @@
+name: lab04a-bgp-basics
+
+topology:
+  kinds:
+    arista_ceos:
+      image: ceos:latest
+
+  nodes:
+
+    r1:
+      kind: arista_ceos
+      startup-config: |
+        hostname R1
+        !
+        spanning-tree mode none
+        ip routing
+        !
+        interface Loopback0
+           ip address 192.168.1.1/32
+        !
+        interface Ethernet1
+           description R1-to-R2-eBGP
+           no switchport
+           ip address 10.12.1.1/24
+        !
+        end
+
+    r2:
+      kind: arista_ceos
+      startup-config: |
+        hostname R2
+        !
+        spanning-tree mode none
+        ip routing
+        !
+        interface Loopback0
+           ip address 192.168.2.2/32
+        !
+        interface Ethernet1
+           description R2-to-R1-eBGP
+           no switchport
+           ip address 10.12.1.2/24
+        !
+        end
+
+  links:
+    - endpoints: ["r1:eth1", "r2:eth1"]
