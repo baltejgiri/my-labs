@@ -1,4 +1,5 @@
-# Lab 01: Hostname Customization, Interface Activation, and Dual-Stack (IPv4/IPv6) Addressing
+# Lab 01 Getting Started
+>  Hostname Customization, Interface Activation, and Dual-Stack (IPv4/IPv6) Addressing
 
 ---
 

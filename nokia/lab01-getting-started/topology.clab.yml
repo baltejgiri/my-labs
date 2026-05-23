@@ -6,13 +6,13 @@ topology:
       image: ghcr.io/nokia/srlinux:24.10
 
   nodes:
-    srlinux-sw1:
-      kind: nokia_srlinux
-      mgmt-ipv4: 172.20.20.1
-    srlinux-sw2:
+    sw1:
       kind: nokia_srlinux
       mgmt-ipv4: 172.20.20.2
+    sw2:
+      kind: nokia_srlinux
+      mgmt-ipv4: 172.20.20.3
 
   links:
-    - endpoints: ["srlinux-sw1:e1-1", "srlinux-sw2:e1-1"]
+    - endpoints: ["sw1:e1-1", "sw2:e1-1"]
 
