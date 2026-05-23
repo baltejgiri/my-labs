@@ -47,8 +47,6 @@ Based on the state datastore output above, is `ethernet-1/1` administratively up
 * **Oper state:**
 * **Distinction:**
 
----
-
 ## Section 2: Transactional Identity & State Preparation
 
 ### Question 2.1
@@ -82,8 +80,6 @@ What command shows a line-by-line diff of your pending candidate changes before 
 [PASTE OUTPUT HERE]
 ```
 
----
-
 ## Section 3: Layer 3 Interface & Protocol Bindings
 
 ### Question 3.1
@@ -109,8 +105,6 @@ What command bound subinterface `ethernet-1/1.0` into the default network-instan
 Why is binding the subinterface into a network-instance required before the interface can participate in routing?
 
 * **Answer:**
-
----
 
 ## Section 4: Transactional Validation & Commit
 

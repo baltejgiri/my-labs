@@ -1,5 +1,7 @@
 # Lab 01: Hostname Customization, Interface Activation, and Dual-Stack (IPv4/IPv6) Addressing
 
+---
+
 ## Objective
 
 Establish point-to-point Layer 3 routing readiness between two back-to-back nodes
@@ -7,13 +9,10 @@ utilizing a model-driven configuration data store. You must successfully navigat
 modes, enable physical and logical structures, allocate appropriate subnets, and prove
 bidirectional reachability.
 
----
 
 ## Topology Linkage
 
 * `sw1` interface `ethernet-1/1` is wired back-to-back directly to `sw2` interface `ethernet-1/1`.
-
----
 
 ## Deploying the Lab
 
@@ -24,8 +23,6 @@ sudo containerlab deploy -t topology.clab.yml
 ```
 
 Containerlab will pull the SR Linux image if not already present locally and bring up both nodes. Startup typically takes under a minute.
-
----
 
 ## Deployment Verification
 
@@ -48,8 +45,6 @@ docker ps
 ```
 
 Both containers should appear. If a container has exited, it will not appear here — use `docker ps -a` to see it and inspect the logs for the cause.
-
----
 
 ## Connecting to Lab Nodes
 
@@ -76,8 +71,6 @@ Once connected, you will land at the SR Linux prompt:
 --{ running }--[  ]--
 A:admin@sw1#
 ```
-
----
 
 ## Core Tasks
 
@@ -117,8 +110,6 @@ SR Linux uses a model-driven architecture with distinct datastores, each serving
 
 1. Perform a structural check on your pending changes to ensure no syntax parameters break system modeling rules.
 2. Execute a permanent write transaction to migrate your changes from the private candidate data store to the running state engine.
-
----
 
 ## Lab Management
 
