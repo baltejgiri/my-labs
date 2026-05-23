@@ -1,0 +1,63 @@
+! Startup-config last modified at Sun May 10 16:35:20 2026 by admin
+! device: SW1 (cEOSLab, EOS-4.32.0F-36401836.4320F (engineering build))
+!
+no aaa root
+!
+username admin privilege 15 role network-admin secret sha512 $6$.Rf7VZzcfKrIZoXM$FZyoh./K/hmclW4xnMgwywg0/kR1QcYXarkZImv/Omv/qpRYNDn8yBGX1R/5is2nmjPeesIuuLDy4tMNGD7ef0
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+lldp timer 10
+lldp hold-time 40
+!
+logging buffered 10000 informational
+!
+hostname SW1
+!
+spanning-tree mode mstp
+!
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+!
+vrf instance MGMT
+!
+banner login
+Welcome to SW1 | Lab 01 - Arista EOS Basics
+Authorised access only.
+EOF
+!
+management api http-commands
+   protocol http
+   no shutdown
+   !
+   vrf MGMT
+      no shutdown
+!
+interface Ethernet1
+   description TO-PC1
+   no switchport
+   ip address 10.0.0.1/24
+!
+interface Ethernet2
+   description TO-SW2
+   no switchport
+   ip address 10.1.0.1/30
+!
+interface Management0
+   vrf MGMT
+   ip address 172.20.20.5/24
+   ipv6 address 3fff:172:20:20::5/64
+!
+no ip routing
+no ip routing vrf MGMT
+!
+ip route vrf MGMT 0.0.0.0/0 172.100.100.1
+!
+management ssh
+   vrf MGMT
+      no shutdown
+!
+end

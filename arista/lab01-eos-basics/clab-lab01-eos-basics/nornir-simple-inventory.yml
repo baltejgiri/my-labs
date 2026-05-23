@@ -1,0 +1,21 @@
+---
+sw1:
+    username: admin
+    password: admin
+    platform: arista_ceos
+    hostname: 172.20.20.5
+sw2:
+    username: admin
+    password: admin
+    platform: arista_ceos
+    hostname: 172.20.20.3
+pc1:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.2
+pc2:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.4

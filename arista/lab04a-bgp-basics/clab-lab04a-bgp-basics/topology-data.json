@@ -1,0 +1,101 @@
+{
+  "name": "lab04a-bgp-basics",
+  "type": "clab",
+  "clab": {
+    "config": {
+      "prefix": "clab",
+      "mgmt": {
+        "network": "clab",
+        "bridge": "br-e7fc726c833e",
+        "ipv4-subnet": "172.20.20.0/24",
+        "ipv4-gw": "172.20.20.1",
+        "ipv6-subnet": "3fff:172:20:20::/64",
+        "ipv6-gw": "3fff:172:20:20::1",
+        "external-access": true
+      }
+    }
+  },
+  "ssh-pub-keys": ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIESpf84jVgYuzevKgDVfgkbfM+Dn1TTrwUNTFwc0ccjd"],
+  "nodes": {
+    "r1": {
+      "index": "0",
+      "shortname": "r1",
+      "longname": "clab-lab04a-bgp-basics-r1",
+      "fqdn": "r1.lab04a-bgp-basics.io",
+      "group": "",
+      "labdir": "/home/girib/my-labs/arista/lab04a-bgp-basics/clab-lab04a-bgp-basics/r1",
+      "kind": "arista_ceos",
+      "image": "ceos:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "Management0",
+      "mgmt-ipv4-address": "172.20.20.2",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::2",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "00:1c:73:d3:dc:0b",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-e7fc726c833e",
+        "clab-node-group": "",
+        "clab-node-kind": "arista_ceos",
+        "clab-node-lab-dir": "/home/girib/my-labs/arista/lab04a-bgp-basics/clab-lab04a-bgp-basics/r1",
+        "clab-node-longname": "clab-lab04a-bgp-basics-r1",
+        "clab-node-name": "r1",
+        "clab-node-type": "",
+        "clab-owner": "girib",
+        "clab-topo-file": "/home/girib/my-labs/arista/lab04a-bgp-basics/lab04a-bgp-basics.clab.yml",
+        "containerlab": "lab04a-bgp-basics"
+      },
+      "port-bindings": [
+      ]
+    },
+    "r2": {
+      "index": "1",
+      "shortname": "r2",
+      "longname": "clab-lab04a-bgp-basics-r2",
+      "fqdn": "r2.lab04a-bgp-basics.io",
+      "group": "",
+      "labdir": "/home/girib/my-labs/arista/lab04a-bgp-basics/clab-lab04a-bgp-basics/r2",
+      "kind": "arista_ceos",
+      "image": "ceos:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "Management0",
+      "mgmt-ipv4-address": "172.20.20.3",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::3",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "00:1c:73:31:7f:10",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-e7fc726c833e",
+        "clab-node-group": "",
+        "clab-node-kind": "arista_ceos",
+        "clab-node-lab-dir": "/home/girib/my-labs/arista/lab04a-bgp-basics/clab-lab04a-bgp-basics/r2",
+        "clab-node-longname": "clab-lab04a-bgp-basics-r2",
+        "clab-node-name": "r2",
+        "clab-node-type": "",
+        "clab-owner": "girib",
+        "clab-topo-file": "/home/girib/my-labs/arista/lab04a-bgp-basics/lab04a-bgp-basics.clab.yml",
+        "containerlab": "lab04a-bgp-basics"
+      },
+      "port-bindings": [
+      ]
+    }
+  },
+  "links": [
+    {
+      "endpoints": {
+        "a": {
+          "node": "r1",
+          "interface": "eth1",
+          "mac": "aa:c1:ab:52:09:38",
+          "peer": "z"
+        },
+        "z": {
+          "node": "r2",
+          "interface": "eth1",
+          "mac": "aa:c1:ab:bc:75:86",
+          "peer": "a"
+        }
+      }
+    }
+  ]
+}

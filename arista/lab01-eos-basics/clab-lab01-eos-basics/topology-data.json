@@ -1,0 +1,203 @@
+{
+  "name": "lab01-eos-basics",
+  "type": "clab",
+  "clab": {
+    "config": {
+      "prefix": "clab",
+      "mgmt": {
+        "network": "clab",
+        "bridge": "br-1afe401c1ad0",
+        "ipv4-subnet": "172.20.20.0/24",
+        "ipv4-gw": "172.20.20.1",
+        "ipv6-subnet": "3fff:172:20:20::/64",
+        "ipv6-gw": "3fff:172:20:20::1",
+        "external-access": true
+      }
+    }
+  },
+  "ssh-pub-keys": ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIESpf84jVgYuzevKgDVfgkbfM+Dn1TTrwUNTFwc0ccjd"],
+  "nodes": {
+    "pc1": {
+      "index": "0",
+      "shortname": "pc1",
+      "longname": "clab-lab01-eos-basics-pc1",
+      "fqdn": "pc1.lab01-eos-basics.io",
+      "group": "",
+      "labdir": "/home/girib/my-labs/arista/lab01-eos-basics/clab-lab01-eos-basics/pc1",
+      "kind": "linux",
+      "image": "alpine:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.2",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::2",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-1afe401c1ad0",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/home/girib/my-labs/arista/lab01-eos-basics/clab-lab01-eos-basics/pc1",
+        "clab-node-longname": "clab-lab01-eos-basics-pc1",
+        "clab-node-name": "pc1",
+        "clab-node-type": "",
+        "clab-owner": "girib",
+        "clab-topo-file": "/home/girib/my-labs/arista/lab01-eos-basics/lab01-eos-basics.yml",
+        "containerlab": "lab01-eos-basics",
+        "lab": "lab01",
+        "role": "host"
+      },
+      "port-bindings": [
+      ]
+    },
+    "pc2": {
+      "index": "1",
+      "shortname": "pc2",
+      "longname": "clab-lab01-eos-basics-pc2",
+      "fqdn": "pc2.lab01-eos-basics.io",
+      "group": "",
+      "labdir": "/home/girib/my-labs/arista/lab01-eos-basics/clab-lab01-eos-basics/pc2",
+      "kind": "linux",
+      "image": "alpine:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.4",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::4",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-1afe401c1ad0",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/home/girib/my-labs/arista/lab01-eos-basics/clab-lab01-eos-basics/pc2",
+        "clab-node-longname": "clab-lab01-eos-basics-pc2",
+        "clab-node-name": "pc2",
+        "clab-node-type": "",
+        "clab-owner": "girib",
+        "clab-topo-file": "/home/girib/my-labs/arista/lab01-eos-basics/lab01-eos-basics.yml",
+        "containerlab": "lab01-eos-basics",
+        "lab": "lab01",
+        "role": "host"
+      },
+      "port-bindings": [
+      ]
+    },
+    "sw1": {
+      "index": "2",
+      "shortname": "sw1",
+      "longname": "clab-lab01-eos-basics-sw1",
+      "fqdn": "sw1.lab01-eos-basics.io",
+      "group": "",
+      "labdir": "/home/girib/my-labs/arista/lab01-eos-basics/clab-lab01-eos-basics/sw1",
+      "kind": "arista_ceos",
+      "image": "ceos:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "Management0",
+      "mgmt-ipv4-address": "172.20.20.5",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::5",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "00:1c:73:a0:42:23",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-1afe401c1ad0",
+        "clab-node-group": "",
+        "clab-node-kind": "arista_ceos",
+        "clab-node-lab-dir": "/home/girib/my-labs/arista/lab01-eos-basics/clab-lab01-eos-basics/sw1",
+        "clab-node-longname": "clab-lab01-eos-basics-sw1",
+        "clab-node-name": "sw1",
+        "clab-node-type": "",
+        "clab-owner": "girib",
+        "clab-topo-file": "/home/girib/my-labs/arista/lab01-eos-basics/lab01-eos-basics.yml",
+        "containerlab": "lab01-eos-basics",
+        "lab": "lab01",
+        "role": "switch"
+      },
+      "port-bindings": [
+      ]
+    },
+    "sw2": {
+      "index": "3",
+      "shortname": "sw2",
+      "longname": "clab-lab01-eos-basics-sw2",
+      "fqdn": "sw2.lab01-eos-basics.io",
+      "group": "",
+      "labdir": "/home/girib/my-labs/arista/lab01-eos-basics/clab-lab01-eos-basics/sw2",
+      "kind": "arista_ceos",
+      "image": "ceos:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "Management0",
+      "mgmt-ipv4-address": "172.20.20.3",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::3",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "00:1c:73:71:28:27",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-1afe401c1ad0",
+        "clab-node-group": "",
+        "clab-node-kind": "arista_ceos",
+        "clab-node-lab-dir": "/home/girib/my-labs/arista/lab01-eos-basics/clab-lab01-eos-basics/sw2",
+        "clab-node-longname": "clab-lab01-eos-basics-sw2",
+        "clab-node-name": "sw2",
+        "clab-node-type": "",
+        "clab-owner": "girib",
+        "clab-topo-file": "/home/girib/my-labs/arista/lab01-eos-basics/lab01-eos-basics.yml",
+        "containerlab": "lab01-eos-basics",
+        "lab": "lab01",
+        "role": "switch"
+      },
+      "port-bindings": [
+      ]
+    }
+  },
+  "links": [
+    {
+      "endpoints": {
+        "a": {
+          "node": "pc1",
+          "interface": "eth1",
+          "mac": "aa:c1:ab:b0:85:32",
+          "peer": "z"
+        },
+        "z": {
+          "node": "sw1",
+          "interface": "eth1",
+          "mac": "aa:c1:ab:67:7b:99",
+          "peer": "a"
+        }
+      }
+    },
+    {
+      "endpoints": {
+        "a": {
+          "node": "sw1",
+          "interface": "eth2",
+          "mac": "aa:c1:ab:74:a3:43",
+          "peer": "z"
+        },
+        "z": {
+          "node": "sw2",
+          "interface": "eth1",
+          "mac": "aa:c1:ab:27:16:c1",
+          "peer": "a"
+        }
+      }
+    },
+    {
+      "endpoints": {
+        "a": {
+          "node": "sw2",
+          "interface": "eth2",
+          "mac": "aa:c1:ab:9a:da:a1",
+          "peer": "z"
+        },
+        "z": {
+          "node": "pc2",
+          "interface": "eth1",
+          "mac": "aa:c1:ab:53:a4:cd",
+          "peer": "a"
+        }
+      }
+    }
+  ]
+}
