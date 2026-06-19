@@ -1,6 +1,6 @@
 # my-labs
 
-A hands-on lab portfolio built across two tracks: **CCNA topic refresher** labs on Cisco IOS/CML to keep certified fundamentals sharp, and **CCNP Enterprise ENCOR (350-401)** practice on Arista cEOS and Nokia SR Linux via Containerlab.
+A hands-on lab portfolio built across two tracks: **CCNA topic refresher** labs on Cisco IOS/CML to keep certified fundamentals sharp, and **CCNP Enterprise** certification pursuit — ENCOR 350-401 (target November 2026) followed by ENARSI 300-410 (target May 2027) — practised on Arista cEOS and Nokia SR Linux via Containerlab.
 
 ---
 
@@ -9,7 +9,7 @@ A hands-on lab portfolio built across two tracks: **CCNA topic refresher** labs 
 | Track | Platform | Focus |
 |-------|----------|-------|
 | CCNA — Cisco IOS Labs | Cisco Modeling Labs (CML) | 10 labs reinforcing core CCNA topics (already certified) |
-| CCNP — ENCOR Labs | Containerlab + Arista cEOS / Nokia SR Linux | Blueprint-driven labs (ENCOR 350-401, target Nov 2026) |
+| CCNP — ENCOR → ENARSI | Containerlab + Arista cEOS / Nokia SR Linux | ENCOR 350-401 (Nov 2026) → ENARSI 300-410 (May 2027) |
 
 ---
 
