@@ -1,22 +1,21 @@
 # my-labs
 
-A hands-on lab portfolio spanning three parallel tracks: **CCNA exam preparation** using Cisco IOS on CML, **CCNP Enterprise ENCOR (350-401)** practice using Arista cEOS and Nokia SR Linux on Containerlab, and **job-hunt preparation** with documented writeups for network engineering interviews.
+A hands-on lab portfolio built across two tracks: **CCNA topic refresher** labs on Cisco IOS/CML to keep certified fundamentals sharp, and **CCNP Enterprise ENCOR (350-401)** practice on Arista cEOS and Nokia SR Linux via Containerlab.
 
 ---
 
-## Three Tracks at a Glance
+## Two Tracks at a Glance
 
 | Track | Platform | Focus |
 |-------|----------|-------|
-| CCNA — Cisco IOS Labs | Cisco Modeling Labs (CML) | 10 labs covering all CCNA 200-301 domains |
+| CCNA — Cisco IOS Labs | Cisco Modeling Labs (CML) | 10 labs reinforcing core CCNA topics (already certified) |
 | CCNP — ENCOR Labs | Containerlab + Arista cEOS / Nokia SR Linux | Blueprint-driven labs (ENCOR 350-401, target Nov 2026) |
-| Job Hunt | — | Technical interview prep, writeups, role-specific evidence |
 
 ---
 
 ## Track 1 — CCNA Cisco IOS Labs
 
-Ten labs built on **Cisco Modeling Labs (CML)** using IOSv (routers) and IOSv L2 (switches). Each lab maps to a CCNA 200-301 exam domain and follows the exam-paper format: objectives and tasks only, no hints.
+Ten labs on **Cisco Modeling Labs (CML)** using IOSv (routers) and IOSv L2 (switches). Purpose is to keep CCNA fundamentals sharp through hands-on practice — not exam prep. Already certified. Each lab follows the exam-paper format: objectives and tasks only, no hints.
 
 | Lab | Topic | CCNA Domain | Weight |
 |-----|-------|-------------|--------|
@@ -53,12 +52,6 @@ The core driver for this repository is passing the **Cisco 350-401 ENCOR** exam 
 
 ---
 
-## Track 3 — Job Hunt
-
-Technical interview preparation and role-specific evidence. See `job-hunt/` for writeups, role analysis, and lab summaries tailored to job applications.
-
----
-
 ## Repository Layout
 
 ```
@@ -88,11 +81,8 @@ my-labs/
 │   ├── mlag-lab/                  ENCOR 3.0 — MLAG, LACP, high-availability
 │   └── dc-starter/                ENCOR 1.0/3.0 — Data centre topology starter
 │
-├── nokia/                     ← Nokia SR Linux labs (Containerlab) — ENCOR track
-│   └── lab01-getting-started/     SR Linux basics, CLI, topology bring-up
-│
-└── job-hunt/                  ← Interview prep and role-specific writeups
-    └── nokia-tac-role/            Nokia TAC Engineer application materials
+└── nokia/                     ← Nokia SR Linux labs (Containerlab) — ENCOR track
+    └── lab01-getting-started/     SR Linux basics, CLI, topology bring-up
 ```
 
 Each lab folder follows the same three-file structure:
