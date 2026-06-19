@@ -37,7 +37,7 @@ Ten labs on **Cisco Modeling Labs (CML)** using IOSv (routers) and IOSv L2 (swit
 
 ## Track 2 — CCNP Enterprise ENCOR Labs
 
-The core driver for this repository is passing the **Cisco 350-401 ENCOR** exam (target: November 2026). Arista cEOS and Nokia SR Linux serve as the practice platforms — protocol behaviour is identical to IOS-XE, and the structured CLI output makes verification faster.
+The core driver for this repository is passing the **Cisco 350-401 ENCOR** exam, followed by ENARSI 300-410. Arista cEOS and Nokia SR Linux serve as the practice platforms — protocol behaviour is identical to IOS-XE, and the structured CLI output makes verification faster.
 
 | ENCOR Domain | Weight | Current Lab Coverage |
 |---|---|---|
@@ -220,5 +220,5 @@ sudo clab destroy -t <path>.clab.yml --cleanup
 
 ## Author
 
-**Baltej Giri** — Network Systems Analyst | CCNA | AZ-900 | Pursuing CCNP Enterprise (ENCOR Nov 2026)  
+**Baltej Giri** — Network Systems Analyst | CCNA | AZ-900 | Pursuing CCNP Enterprise  
 [GitHub](https://github.com/baltejgiri)
