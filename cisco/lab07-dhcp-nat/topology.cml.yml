@@ -1,0 +1,213 @@
+lab:
+  title: "CCNA Lab 07 — DHCP & NAT"
+  description: "Configure DHCP server, DHCP relay, static NAT, dynamic NAT, and PAT."
+  notes: "R1 outside IP and R2 (ISP) are pre-configured. Configure DHCP and NAT on R1."
+  timestamp: 1750000000.0
+  version: 0.0.3
+
+nodes:
+  - id: n0
+    label: R1
+    node_definition: iosv
+    x: 0
+    y: 0
+    configuration: |
+      hostname R1
+      no ip domain-lookup
+      !
+      interface GigabitEthernet0/1
+       description Outside - Link to ISP
+       ip address 203.0.113.1 255.255.255.252
+       no shutdown
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n1
+    label: R2-ISP
+    node_definition: iosv
+    x: 0
+    y: -250
+    configuration: |
+      hostname R2-ISP
+      no ip domain-lookup
+      !
+      interface GigabitEthernet0/0
+       description Link to R1
+       ip address 203.0.113.2 255.255.255.252
+       no shutdown
+      !
+      interface Loopback0
+       description Simulated Internet
+       ip address 8.8.8.8 255.255.255.255
+      !
+      ip route 0.0.0.0 0.0.0.0 Null0
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n2
+    label: SW1
+    node_definition: iosvl2
+    x: -200
+    y: 200
+    configuration: |
+      hostname SW1
+      no ip domain-lookup
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n3
+    label: SW2
+    node_definition: iosvl2
+    x: 200
+    y: 200
+    configuration: |
+      hostname SW2
+      no ip domain-lookup
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n4
+    label: PC1
+    node_definition: alpine
+    x: -350
+    y: 400
+    configuration: ""
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n5
+    label: PC2
+    node_definition: alpine
+    x: -100
+    y: 400
+    configuration: ""
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n6
+    label: PC3
+    node_definition: alpine
+    x: 150
+    y: 400
+    configuration: ""
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n7
+    label: Server1
+    node_definition: alpine
+    x: 350
+    y: 400
+    configuration: ""
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+links:
+  # R1 GE0/0 → SW1 (LAN1 — DHCP clients)
+  - id: l0
+    n1: n0
+    i1: 0
+    n2: n2
+    i2: 0
+  # R1 GE0/2 → SW2 (LAN2 — DHCP relay segment)
+  - id: l1
+    n1: n0
+    i1: 2
+    n2: n3
+    i2: 0
+  # R1 GE0/1 → R2-ISP
+  - id: l2
+    n1: n0
+    i1: 1
+    n2: n1
+    i2: 0
+  # SW1 access ports
+  - id: l3
+    n1: n2
+    i1: 1
+    n2: n4
+    i2: 0
+  - id: l4
+    n1: n2
+    i1: 2
+    n2: n5
+    i2: 0
+  # SW2 access ports
+  - id: l5
+    n1: n3
+    i1: 1
+    n2: n6
+    i2: 0
+  - id: l6
+    n1: n3
+    i1: 2
+    n2: n7
+    i2: 0

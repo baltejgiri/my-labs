@@ -1,0 +1,205 @@
+lab:
+  title: "CCNA Lab 05 — Static Routing & Default Routes"
+  description: "Configure static routes, a default route, and floating static routes. IP addresses are pre-configured."
+  notes: "Interface IPs are pre-configured. Your task is to configure routing between the sites."
+  timestamp: 1750000000.0
+  version: 0.0.3
+
+nodes:
+  - id: n0
+    label: R1
+    node_definition: iosv
+    x: -300
+    y: 0
+    configuration: |
+      hostname R1
+      no ip domain-lookup
+      !
+      interface GigabitEthernet0/0
+       description Link to R2
+       ip address 10.0.12.1 255.255.255.252
+       no shutdown
+      !
+      interface GigabitEthernet0/1
+       description LAN1
+       ip address 192.168.1.1 255.255.255.0
+       no shutdown
+      !
+      interface Loopback0
+       ip address 1.1.1.1 255.255.255.255
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n1
+    label: R2
+    node_definition: iosv
+    x: 0
+    y: 0
+    configuration: |
+      hostname R2
+      no ip domain-lookup
+      !
+      interface GigabitEthernet0/0
+       description Link to R1
+       ip address 10.0.12.2 255.255.255.252
+       no shutdown
+      !
+      interface GigabitEthernet0/1
+       description Link to R3
+       ip address 10.0.23.1 255.255.255.252
+       no shutdown
+      !
+      interface GigabitEthernet0/2
+       description Link to ISP (R4)
+       ip address 203.0.113.1 255.255.255.252
+       no shutdown
+      !
+      interface Loopback0
+       ip address 2.2.2.2 255.255.255.255
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n2
+    label: R3
+    node_definition: iosv
+    x: 300
+    y: 0
+    configuration: |
+      hostname R3
+      no ip domain-lookup
+      !
+      interface GigabitEthernet0/0
+       description Link to R2
+       ip address 10.0.23.2 255.255.255.252
+       no shutdown
+      !
+      interface GigabitEthernet0/1
+       description LAN3
+       ip address 192.168.3.1 255.255.255.0
+       no shutdown
+      !
+      interface Loopback0
+       ip address 3.3.3.3 255.255.255.255
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n3
+    label: R4-ISP
+    node_definition: iosv
+    x: 0
+    y: -250
+    configuration: |
+      hostname R4-ISP
+      no ip domain-lookup
+      !
+      interface GigabitEthernet0/0
+       description Link to R2
+       ip address 203.0.113.2 255.255.255.252
+       no shutdown
+      !
+      interface Loopback0
+       description Simulated Internet Host
+       ip address 8.8.8.8 255.255.255.255
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n4
+    label: PC1
+    node_definition: alpine
+    x: -450
+    y: 200
+    configuration: ""
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n5
+    label: PC2
+    node_definition: alpine
+    x: 450
+    y: 200
+    configuration: ""
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+links:
+  - id: l0
+    n1: n0
+    i1: 0
+    n2: n1
+    i2: 0
+  - id: l1
+    n1: n1
+    i1: 1
+    n2: n2
+    i2: 0
+  - id: l2
+    n1: n1
+    i1: 2
+    n2: n3
+    i2: 0
+  - id: l3
+    n1: n0
+    i1: 1
+    n2: n4
+    i2: 0
+  - id: l4
+    n1: n2
+    i1: 1
+    n2: n5
+    i2: 0

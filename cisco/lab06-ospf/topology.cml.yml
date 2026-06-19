@@ -1,0 +1,209 @@
+lab:
+  title: "CCNA Lab 06 — OSPFv2 (Single-Area & Multi-Area)"
+  description: "Configure OSPFv2 in a single area, then extend to a multi-area topology with ABRs."
+  notes: "Interface IPs are pre-configured. Configure OSPF process and area assignments."
+  timestamp: 1750000000.0
+  version: 0.0.3
+
+nodes:
+  - id: n0
+    label: R1-ABR
+    node_definition: iosv
+    x: 0
+    y: 0
+    configuration: |
+      hostname R1-ABR
+      no ip domain-lookup
+      !
+      interface GigabitEthernet0/0
+       description Link to R2 (Area 0)
+       ip address 10.0.12.1 255.255.255.252
+       no shutdown
+      !
+      interface GigabitEthernet0/1
+       description Link to R3 (Area 0)
+       ip address 10.0.13.1 255.255.255.252
+       no shutdown
+      !
+      interface GigabitEthernet0/2
+       description Link to R4 (Area 1)
+       ip address 10.0.14.1 255.255.255.252
+       no shutdown
+      !
+      interface Loopback0
+       ip address 1.1.1.1 255.255.255.255
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n1
+    label: R2
+    node_definition: iosv
+    x: -250
+    y: -200
+    configuration: |
+      hostname R2
+      no ip domain-lookup
+      !
+      interface GigabitEthernet0/0
+       description Link to R1-ABR (Area 0)
+       ip address 10.0.12.2 255.255.255.252
+       no shutdown
+      !
+      interface GigabitEthernet0/1
+       description Link to R3 (Area 0)
+       ip address 10.0.23.1 255.255.255.252
+       no shutdown
+      !
+      interface Loopback0
+       ip address 2.2.2.2 255.255.255.255
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n2
+    label: R3-ABR
+    node_definition: iosv
+    x: 250
+    y: -200
+    configuration: |
+      hostname R3-ABR
+      no ip domain-lookup
+      !
+      interface GigabitEthernet0/0
+       description Link to R1-ABR (Area 0)
+       ip address 10.0.13.2 255.255.255.252
+       no shutdown
+      !
+      interface GigabitEthernet0/1
+       description Link to R2 (Area 0)
+       ip address 10.0.23.2 255.255.255.252
+       no shutdown
+      !
+      interface GigabitEthernet0/2
+       description Link to R5 (Area 2)
+       ip address 10.0.35.1 255.255.255.252
+       no shutdown
+      !
+      interface Loopback0
+       ip address 3.3.3.3 255.255.255.255
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n3
+    label: R4
+    node_definition: iosv
+    x: -250
+    y: 200
+    configuration: |
+      hostname R4
+      no ip domain-lookup
+      !
+      interface GigabitEthernet0/0
+       description Link to R1-ABR (Area 1)
+       ip address 10.0.14.2 255.255.255.252
+       no shutdown
+      !
+      interface Loopback0
+       ip address 4.4.4.4 255.255.255.255
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n4
+    label: R5
+    node_definition: iosv
+    x: 250
+    y: 200
+    configuration: |
+      hostname R5
+      no ip domain-lookup
+      !
+      interface GigabitEthernet0/0
+       description Link to R3-ABR (Area 2)
+       ip address 10.0.35.2 255.255.255.252
+       no shutdown
+      !
+      interface Loopback0
+       ip address 5.5.5.5 255.255.255.255
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+links:
+  - id: l0
+    n1: n0
+    i1: 0
+    n2: n1
+    i2: 0
+  - id: l1
+    n1: n0
+    i1: 1
+    n2: n2
+    i2: 0
+  - id: l2
+    n1: n1
+    i1: 1
+    n2: n2
+    i2: 1
+  - id: l3
+    n1: n0
+    i1: 2
+    n2: n3
+    i2: 0
+  - id: l4
+    n1: n2
+    i1: 2
+    n2: n4
+    i2: 0

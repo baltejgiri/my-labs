@@ -1,0 +1,115 @@
+lab:
+  title: "CCNA Lab 04 — EtherChannel"
+  description: "Configure LACP, PAgP, and static EtherChannel bundles between switches."
+  notes: "Four parallel links connect SW1 to SW2. No channel groups are pre-configured."
+  timestamp: 1750000000.0
+  version: 0.0.3
+
+nodes:
+  - id: n0
+    label: SW1
+    node_definition: iosvl2
+    x: -200
+    y: 0
+    configuration: |
+      hostname SW1
+      no ip domain-lookup
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n1
+    label: SW2
+    node_definition: iosvl2
+    x: 200
+    y: 0
+    configuration: |
+      hostname SW2
+      no ip domain-lookup
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n2
+    label: PC1
+    node_definition: alpine
+    x: -400
+    y: 0
+    configuration: ""
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n3
+    label: PC2
+    node_definition: alpine
+    x: 400
+    y: 0
+    configuration: ""
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+links:
+  # Four parallel links between SW1 and SW2 (GE0/0–GE0/3)
+  - id: l0
+    n1: n0
+    i1: 0
+    n2: n1
+    i2: 0
+  - id: l1
+    n1: n0
+    i1: 1
+    n2: n1
+    i2: 1
+  - id: l2
+    n1: n0
+    i1: 2
+    n2: n1
+    i2: 2
+  - id: l3
+    n1: n0
+    i1: 3
+    n2: n1
+    i2: 3
+  # Access ports (GE1/0 on each switch)
+  - id: l4
+    n1: n0
+    i1: 4
+    n2: n2
+    i2: 0
+  - id: l5
+    n1: n1
+    i1: 4
+    n2: n3
+    i2: 0

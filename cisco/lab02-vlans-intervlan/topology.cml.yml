@@ -1,0 +1,150 @@
+lab:
+  title: "CCNA Lab 02 — VLANs & Inter-VLAN Routing"
+  description: "Configure VLANs, 802.1Q trunks, Router-on-a-Stick, and SVI-based inter-VLAN routing."
+  notes: "No VLANs or trunk configuration is pre-applied. Hostnames only."
+  timestamp: 1750000000.0
+  version: 0.0.3
+
+nodes:
+  - id: n0
+    label: R1
+    node_definition: iosv
+    x: 0
+    y: 150
+    configuration: |
+      hostname R1
+      no ip domain-lookup
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n1
+    label: SW1
+    node_definition: iosvl2
+    x: 0
+    y: -100
+    configuration: |
+      hostname SW1
+      no ip domain-lookup
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n2
+    label: SW2
+    node_definition: iosvl2
+    x: 300
+    y: -300
+    configuration: |
+      hostname SW2
+      no ip domain-lookup
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n3
+    label: PC1
+    node_definition: alpine
+    x: -250
+    y: -350
+    configuration: ""
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n4
+    label: PC2
+    node_definition: alpine
+    x: 50
+    y: -350
+    configuration: ""
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n5
+    label: PC3
+    node_definition: alpine
+    x: 300
+    y: -500
+    configuration: ""
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+links:
+  # R1 GE0/0 → SW1 GE0/0 (trunk for Router-on-a-Stick)
+  - id: l0
+    n1: n0
+    i1: 0
+    n2: n1
+    i2: 0
+  # SW1 GE0/1 → SW2 GE0/0 (inter-switch trunk)
+  - id: l1
+    n1: n1
+    i1: 1
+    n2: n2
+    i2: 0
+  # SW1 GE0/2 → PC1 (access VLAN 10)
+  - id: l2
+    n1: n1
+    i1: 2
+    n2: n3
+    i2: 0
+  # SW1 GE0/3 → PC2 (access VLAN 20)
+  - id: l3
+    n1: n1
+    i1: 3
+    n2: n4
+    i2: 0
+  # SW2 GE0/1 → PC3 (access VLAN 10)
+  - id: l4
+    n1: n2
+    i1: 1
+    n2: n5
+    i2: 0

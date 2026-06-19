@@ -1,0 +1,152 @@
+lab:
+  title: "CCNA Lab 01 — IP Addressing & Network Fundamentals"
+  description: "Plan a VLSM scheme from 10.0.0.0/24 and configure all devices from scratch."
+  notes: "No IP addresses are pre-configured. Boot all nodes before starting."
+  timestamp: 1750000000.0
+  version: 0.0.3
+
+nodes:
+  - id: n0
+    label: R1
+    node_definition: iosv
+    x: 0
+    y: 0
+    configuration: |
+      hostname R1
+      no ip domain-lookup
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n1
+    label: R2
+    node_definition: iosv
+    x: 300
+    y: 0
+    configuration: |
+      hostname R2
+      no ip domain-lookup
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n2
+    label: R3
+    node_definition: iosv
+    x: 600
+    y: 0
+    configuration: |
+      hostname R3
+      no ip domain-lookup
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n3
+    label: SW1
+    node_definition: iosvl2
+    x: 0
+    y: -250
+    configuration: |
+      hostname SW1
+      no ip domain-lookup
+      !
+      line con 0
+       logging synchronous
+      !
+      end
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n4
+    label: PC1
+    node_definition: alpine
+    x: -150
+    y: -450
+    configuration: ""
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+  - id: n5
+    label: PC2
+    node_definition: alpine
+    x: 150
+    y: -450
+    configuration: ""
+    tags: []
+    boot_disk_size: null
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    image_definition: null
+    ram: null
+
+links:
+  - id: l0
+    n1: n0
+    i1: 0
+    n2: n1
+    i2: 0
+  - id: l1
+    n1: n1
+    i1: 1
+    n2: n2
+    i2: 0
+  - id: l2
+    n1: n0
+    i1: 1
+    n2: n3
+    i2: 0
+  - id: l3
+    n1: n3
+    i1: 1
+    n2: n4
+    i2: 0
+  - id: l4
+    n1: n3
+    i1: 2
+    n2: n5
+    i2: 0
