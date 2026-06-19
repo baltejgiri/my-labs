@@ -1,44 +1,61 @@
 # my-labs
 
-A hands-on lab portfolio built with **Containerlab** and vendor-native NOS images, structured around the **CCNP Enterprise ENCOR (350-401)** exam blueprint. Labs cover every major ENCOR domain — switching, routing, wireless, SD-WAN/SD-Access architecture, security, QoS, and automation — using Arista cEOS and Nokia SR Linux as the practice platforms.
+A hands-on lab portfolio spanning three parallel tracks: **CCNA exam preparation** using Cisco IOS on CML, **CCNP Enterprise ENCOR (350-401)** practice using Arista cEOS and Nokia SR Linux on Containerlab, and **job-hunt preparation** with documented writeups for network engineering interviews.
 
 ---
 
-## Cisco IOS Labs — CCNA Coverage
+## Three Tracks at a Glance
 
-Ten labs built on **Cisco Modeling Labs (CML)** using IOSv and IOSv L2 images. Each lab maps directly to a CCNA 200-301 exam domain and is structured as an exam paper (objectives + tasks, no hints) with a separate solution workbook.
-
-| Lab | Topic | CCNA Domain |
-|-----|-------|-------------|
-| 01 | IP Addressing & Network Fundamentals | 1.0 — 20% |
-| 02 | VLANs & Inter-VLAN Routing | 2.0 — 20% |
-| 03 | Spanning Tree Protocol | 2.0 — 20% |
-| 04 | EtherChannel | 2.0 — 20% |
-| 05 | Static Routing & Default Routes | 3.0 — 25% |
-| 06 | OSPFv2 — Single-Area & Multi-Area | 3.0 — 25% |
-| 07 | DHCP & NAT | 4.0 — 10% |
-| 08 | ACLs & Device Security | 5.0 — 15% |
-| 09 | IPv6 — SLAAC, DHCPv6, OSPFv3, Dual-Stack | 1.0 + 3.0 |
-| 10 | IP Services — NTP, SNMP, Syslog, HSRP | 4.0 — 10% |
-
-> **Platform:** Load `topology.cml.yml` from each lab directory into CML. All labs use IOSv (routers) and IOSv L2 (switches) node definitions. End hosts use Alpine Linux.
+| Track | Platform | Focus |
+|-------|----------|-------|
+| CCNA — Cisco IOS Labs | Cisco Modeling Labs (CML) | 10 labs covering all CCNA 200-301 domains |
+| CCNP — ENCOR Labs | Containerlab + Arista cEOS / Nokia SR Linux | Blueprint-driven labs (ENCOR 350-401, target Nov 2026) |
+| Job Hunt | — | Technical interview prep, writeups, role-specific evidence |
 
 ---
 
-## Primary Focus — CCNP Enterprise (ENCOR 350-401)
+## Track 1 — CCNA Cisco IOS Labs
 
-The core driver for this repository is passing the **Cisco 350-401 ENCOR** exam (target: November 2026). Every lab is intentionally tied to at least one ENCOR blueprint domain:
+Ten labs built on **Cisco Modeling Labs (CML)** using IOSv (routers) and IOSv L2 (switches). Each lab maps to a CCNA 200-301 exam domain and follows the exam-paper format: objectives and tasks only, no hints.
 
-| ENCOR Domain | Weight | Coverage in This Repo |
+| Lab | Topic | CCNA Domain | Weight |
+|-----|-------|-------------|--------|
+| 01 | IP Addressing & Network Fundamentals | 1.0 Network Fundamentals | 20% |
+| 02 | VLANs & Inter-VLAN Routing | 2.0 Network Access | 20% |
+| 03 | Spanning Tree Protocol | 2.0 Network Access | 20% |
+| 04 | EtherChannel | 2.0 Network Access | 20% |
+| 05 | Static Routing & Default Routes | 3.0 IP Connectivity | 25% |
+| 06 | OSPFv2 — Single-Area & Multi-Area | 3.0 IP Connectivity | 25% |
+| 07 | DHCP & NAT | 4.0 IP Services | 10% |
+| 08 | ACLs & Device Security | 5.0 Security Fundamentals | 15% |
+| 09 | IPv6 — SLAAC, DHCPv6, OSPFv3, Dual-Stack | 1.0 + 3.0 | — |
+| 10 | IP Services — NTP, SNMP, Syslog, HSRP | 4.0 IP Services | 10% |
+| — | Automation & Programmability | 6.0 Automation | 10% *(planned)* |
+
+> **Platform note:** Load `topology.cml.yml` from each lab directory into CML. End hosts use Alpine Linux. See [Getting Started — CML](#getting-started----cml-cisco-labs) below.
+
+---
+
+## Track 2 — CCNP Enterprise ENCOR Labs
+
+The core driver for this repository is passing the **Cisco 350-401 ENCOR** exam (target: November 2026). Arista cEOS and Nokia SR Linux serve as the practice platforms — protocol behaviour is identical to IOS-XE, and the structured CLI output makes verification faster.
+
+| ENCOR Domain | Weight | Current Lab Coverage |
 |---|---|---|
-| 1.0 Architecture | 15% | SD-Access / SD-WAN design labs, campus/DC topology |
-| 2.0 Virtualization | 10% | VRF, hypervisor/container concepts |
-| 3.0 Infrastructure | 30% | OSPF, BGP, EIGRP, VLANs, STP, FHRP, QoS, MPLS |
-| 4.0 Network Assurance | 10% | SNMP, syslog, IP SLAs, telemetry |
-| 5.0 Security | 20% | AAA, ACLs, 802.1X, Zone-Based Firewall |
-| 6.0 Automation | 15% | Python, REST APIs, NETCONF/YANG, Ansible |
+| 1.0 Architecture | 15% | `dc-starter` — data centre topology (in progress) |
+| 2.0 Virtualization | 10% | VRF-Lite concepts via BGP lab (partial) |
+| 3.0 Infrastructure | 30% | OSPF, BGP, VLANs, STP, MLAG, LACP, L2 forwarding — strong coverage |
+| 4.0 Network Assurance | 10% | Planned |
+| 5.0 Security | 20% | Planned |
+| 6.0 Automation | 15% | Planned |
 
-> Labs are sequenced to build exam-relevant depth first. Vendor choice (Arista vs Nokia) is secondary — the protocol behaviour and ENCOR blueprint alignment are what matter.
+> Labs are sequenced to build exam-relevant depth first. Vendor choice (Arista vs Nokia) is secondary — blueprint alignment is what matters.
+
+---
+
+## Track 3 — Job Hunt
+
+Technical interview preparation and role-specific evidence. See `job-hunt/` for writeups, role analysis, and lab summaries tailored to job applications.
 
 ---
 
@@ -48,7 +65,7 @@ The core driver for this repository is passing the **Cisco 350-401 ENCOR** exam 
 my-labs/
 ├── README.MD                  ← You are here
 │
-├── cisco/                     ← Cisco IOS labs (CML — Cisco Modeling Labs)
+├── cisco/                     ← Cisco IOS labs (CML) — CCNA track
 │   ├── lab01-ip-addressing/       CCNA 1.0 — VLSM, subnetting, CDP/LLDP
 │   ├── lab02-vlans-intervlan/     CCNA 2.0 — VLANs, 802.1Q trunks, Router-on-a-Stick
 │   ├── lab03-spanning-tree/       CCNA 2.0 — PVST+, Rapid PVST+, PortFast, BPDU Guard
@@ -60,30 +77,40 @@ my-labs/
 │   ├── lab09-ipv6/                CCNA 1.0/3.0 — IPv6, SLAAC, DHCPv6, OSPFv3, dual-stack
 │   └── lab10-ip-services/         CCNA 4.0 — NTP, SNMP, Syslog, HSRP/FHRP
 │
-├── arista/                    ← Arista cEOS labs (Containerlab) — ENCOR-aligned
+├── arista/                    ← Arista cEOS labs (Containerlab) — ENCOR track
 │   ├── lab01-eos-basics/          ENCOR 3.0 — CLI, management plane, LLDP
 │   ├── lab02-l2-switching/        ENCOR 3.0 — 802.1Q, VLANs, trunk negotiation
 │   ├── lab03-ospf/                ENCOR 3.0 — OSPF single/multi-area, LSA types
-│   ├── lab03b-ospf/               ENCOR 3.0 — OSPF variant / extended scenarios
+│   ├── lab03b-ospf/               ENCOR 3.0 — OSPF extended scenarios
 │   ├── lab04a-bgp-basics/         ENCOR 3.0 — eBGP/iBGP, attributes, filtering
 │   ├── l2-forwarding/             ENCOR 3.0 — L2 forwarding deep-dive
 │   ├── trunk-lab/                 ENCOR 3.0 — 802.1Q trunking and DTP
 │   ├── mlag-lab/                  ENCOR 3.0 — MLAG, LACP, high-availability
 │   └── dc-starter/                ENCOR 1.0/3.0 — Data centre topology starter
 │
-├── nokia/                     ← Nokia SR Linux labs (Containerlab) — ENCOR-aligned
+├── nokia/                     ← Nokia SR Linux labs (Containerlab) — ENCOR track
 │   └── lab01-getting-started/     SR Linux basics, CLI, topology bring-up
 │
-└── ccnp-exam-prep-2026-2027/  ← Study notes and exam tracking (separate track)
+└── job-hunt/                  ← Interview prep and role-specific writeups
+    └── nokia-tac-role/            Nokia TAC Engineer application materials
 ```
 
-Each lab folder follows the same structure:
+Each lab folder follows the same three-file structure:
 
+**Cisco labs (CML):**
 ```
 lab-XX-topic/
-├── <name>.clab.yml      ← Containerlab topology + inline startup configs
-├── README.md            ← Exam-paper style: objectives and tasks only, no hints
-└── solution.md          ← Answer sheet: exact CLI output, RCA, lessons learned
+├── topology.cml.yml   ← CML topology — import directly into CML
+├── README.md          ← Exam-paper: objectives and tasks, no hints
+└── solution.md        ← Answer sheet: exact CLI output, RCA, lessons learned
+```
+
+**Arista / Nokia labs (Containerlab):**
+```
+lab-XX-topic/
+├── <name>.clab.yml    ← Containerlab topology + inline startup configs
+├── README.md          ← Exam-paper: objectives and tasks, no hints
+└── solution.md        ← Answer sheet: exact CLI output, RCA, lessons learned
 ```
 
 ---
@@ -94,17 +121,21 @@ lab-XX-topic/
 
 **solution.md = the answer sheet.** Captures exact commands run, operational state observed, misconfigurations introduced, and root-cause analysis. Written after completing the lab.
 
-This split mirrors the ENCOR exam's troubleshooting questions: you either know how to interpret the output or you don't.
+This split mirrors how real exams work: you either know how to read the output or you don't.
 
 ---
 
 ## Vendor Platforms
 
-### Arista cEOS
+### Cisco IOS (CML)
 
-Used as the primary ENCOR practice platform. EOS command structure maps closely enough to IOS-XE that concepts transfer directly, while EOS's structured CLI output makes verifying protocol state faster.
+Used for the CCNA track. IOSv and IOSv L2 images run directly in CML with no extra wrapping needed. Command syntax is the exam-standard baseline that everything else is measured against.
 
-### Nokia SR Linux
+### Arista cEOS (Containerlab)
+
+Used as the primary ENCOR practice platform. EOS command structure maps closely enough to IOS-XE that concepts transfer directly, while structured CLI output makes verifying protocol state faster.
+
+### Nokia SR Linux (Containerlab)
 
 Used for service-provider adjacent topics (IS-IS, MPLS, L3VPN/VPRN) that appear in ENCOR's Infrastructure domain and give broader exposure to carrier-grade NOS design.
 
@@ -114,15 +145,36 @@ Used for service-provider adjacent topics (IS-IS, MPLS, L3VPN/VPRN) that appear 
 
 | Tool | Purpose |
 |------|---------|
-| [Containerlab](https://containerlab.dev) | Topology orchestration |
-| Arista cEOS | EOS node images |
-| Nokia SR Linux | SR Linux node images |
-| Docker | Container runtime |
+| [Cisco Modeling Labs (CML)](https://developer.cisco.com/modeling-labs/) | Cisco IOS lab orchestration |
+| [Containerlab](https://containerlab.dev) | Arista and Nokia topology orchestration |
+| Arista cEOS | EOS node images (manually imported) |
+| Nokia SR Linux | SR Linux node images (pulled automatically) |
+| Docker | Container runtime for Containerlab |
 | Git / GitHub | Version control and lab history |
 
 ---
 
-## Getting Started
+## Getting Started — CML (Cisco Labs)
+
+### Prerequisites
+
+- Cisco Modeling Labs personal licence with IOSv and IOSv L2 node definitions available
+- Alpine Linux image available in CML (used for end hosts)
+
+### Import and run a lab
+
+1. Open CML and click **Import** (or **File → Import Lab**)
+2. Select `topology.cml.yml` from the lab directory (e.g. `cisco/lab01-ip-addressing/topology.cml.yml`)
+3. Click **Start Lab** to boot all nodes
+4. Access each node via the built-in CML console
+
+### Stop a lab
+
+Click **Stop Lab** in CML. Use **Wipe** to reset node state between attempts.
+
+---
+
+## Getting Started — Containerlab (Arista / Nokia Labs)
 
 ### Prerequisites
 
@@ -134,7 +186,7 @@ Used for service-provider adjacent topics (IS-IS, MPLS, L3VPN/VPRN) that appear 
 bash -c "$(curl -sL https://get.containerlab.dev)"
 ```
 
-- Arista cEOS image imported:
+- Arista cEOS image imported into Docker:
 
 ```bash
 docker import cEOS-lab-x.x.x.tar.xz ceos:latest
@@ -166,7 +218,9 @@ sudo clab destroy -t <path>.clab.yml --cleanup
 
 ## References
 
-- [CCNP ENCOR Exam Blueprint (350-401)](https://learningnetwork.cisco.com/s/encor-exam-topics)
+- [CCNA 200-301 Exam Topics](https://learningnetwork.cisco.com/s/ccna-exam-topics)
+- [CCNP ENCOR 350-401 Exam Topics](https://learningnetwork.cisco.com/s/encor-exam-topics)
+- [Cisco Modeling Labs Documentation](https://developer.cisco.com/docs/modeling-labs/)
 - [Containerlab Documentation](https://containerlab.dev/manual/topo-def-file/)
 - [Arista EOS Central](https://eos.arista.com)
 - [Nokia SR Linux Documentation](https://documentation.nokia.com/srlinux/)
