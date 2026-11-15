@@ -1,10 +1,10 @@
 # Lab 08: IPv4 ACLs (standard, extended and named)
 
-**CCNA Domain:** 5.0 Security Fundamentals (5.6 Configure and verify access control lists)
-**Platforms:** Cisco Packet Tracer 9.0, Cisco Modeling Labs (CML) 2.x, or EVE-NG
-**Based on:** CCNA 200-301 Official Cert Guide, Volume 2, Chapter 2 (Basic IPv4 Access Control Lists) and
-Chapter 3 (Advanced IPv4 Access Control Lists). The topology and host names follow the book's Figure 3-8.
-**Estimated time:** 15 minutes to build (CML: import only), 20 minutes for the ACL tasks
+**CCNA Domain:** 5.0 Security Fundamentals (5.6 Configure and verify access control lists)  
+**Platforms:** Cisco Packet Tracer 9.0, Cisco Modeling Labs (CML) 2.x, or EVE-NG  
+**Based on:** CCNA 200-301 Official Cert Guide, Volume 2, Chapter 2 (Basic IPv4 Access Control Lists) and  
+Chapter 3 (Advanced IPv4 Access Control Lists). The topology and host names follow the book's Figure 3-8.  
+**Estimated time:** 15 minutes to build (CML: import only), 20 minutes for the ACL tasks  
 **Tested:** CML 2.x with IOSv and Alpine, baseline and work order (2026-11-15)
 
 ---
