@@ -1,123 +1,235 @@
-# Lab 08 — ACLs & Device Security
+# Lab 08: IPv4 ACLs (standard, extended and named)
 
-**CCNA Domain:** 5.0 Security Fundamentals  
-**CML Topology:** `topology.cml.yml`  
-**Estimated Time:** 90–105 minutes
+**CCNA Domain:** 5.0 Security Fundamentals (5.6 Configure and verify access control lists)
+**Platforms:** Cisco Packet Tracer 9.0, Cisco Modeling Labs (CML) 2.x, or EVE-NG
+**Based on:** CCNA 200-301 Official Cert Guide, Volume 2, Chapter 2 (Basic IPv4 Access Control Lists) and
+Chapter 3 (Advanced IPv4 Access Control Lists). The topology and host names follow the book's Figure 3-8.
+**Estimated time:** 15 minutes to build (CML: import only), 20 minutes for the ACL tasks
+**Tested:** CML 2.x with IOSv and Alpine, baseline and work order (2026-11-15)
 
 ---
 
 ## Objectives
 
-1. Configure a numbered standard ACL to restrict management access
-2. Configure a numbered extended ACL to filter traffic by protocol and port
-3. Configure a named ACL and understand the advantages over numbered ACLs
-4. Apply ACLs to the correct interface and direction
-5. Harden device management: SSH only, disable Telnet, set banners
-6. Configure local username and password-based authentication
-7. Verify ACL match statistics
+1. Choose between a standard and an extended ACL for a requirement
+2. Place each ACL on the right router, interface and direction
+3. Configure numbered and named ACLs
+4. Work with first-match logic and the implicit deny at the end of every ACL
+5. Verify with tests from the hosts and with `show ip access-lists` match counts
+6. Edit an ACL with sequence numbers
 
 ---
 
 ## Topology
 
 ```
-[PC1] \              
-       [SW1]---[R1 GE0/0]---[R1 GE0/1]---[R2 GE0/0]---[R2 GE0/1]---[Server1]
-[PC2] /
-      192.168.1.0/24         10.0.12.0/30              192.168.2.0/24
+                                      Gi0/1   Gi0/1
+ Server1 .1.100 --+                 +-------- R2 Gi0/0 --- SW12 --- Larry .2.10
+                  SW1 --- Gi0/0 R1 -+          | Gi0/2
+ Server2 .1.102 --+                 |          |
+                                    |          | Gi0/2
+                                    +-------- R3 Gi0/0 --- SW13 --+- Bob   .3.10
+                                      Gi0/2   Gi0/1               +- Jerry .3.9
 ```
 
----
-
-## Pre-Configured Addressing
-
-All IPs, default gateways, and static routes are already configured. Do **not** change them.
-
-| Device | Interface | IP | Description |
-|--------|-----------|-----|-------------|
-| R1 | GE0/0 | 192.168.1.1/24 | Inside LAN gateway |
-| R1 | GE0/1 | 10.0.12.1/30 | Link to R2 |
-| R2 | GE0/0 | 10.0.12.2/30 | Link to R1 |
-| R2 | GE0/1 | 192.168.2.1/24 | Server LAN gateway |
-| PC1 | eth0 | 192.168.1.10/24 | GW: 192.168.1.1 |
-| PC2 | eth0 | 192.168.1.20/24 | GW: 192.168.1.1 |
-| Server1 | eth0 | 192.168.2.100/24 | GW: 192.168.2.1 |
+| Site | Hosts | Subnet |
+|---|---|---|
+| Main site (R1) | Server1 172.16.1.100, Server2 172.16.1.102 | 172.16.1.0/24 |
+| Branch (R2) | Larry 172.16.2.10 | 172.16.2.0/24 |
+| Branch (R3) | Bob 172.16.3.10, Jerry 172.16.3.9 | 172.16.3.0/24 |
+| R1-R2 link | | 172.16.12.0/30 |
+| R1-R3 link | | 172.16.13.0/30 |
+| R2-R3 link | | 172.16.23.0/30 |
 
 ---
 
-## Tasks
+## Part 1: Build the network
 
-### Task 1 — Verify Baseline Connectivity
+Pick one platform. The router configs and the work order are the same on all three.
 
-1.1 Assign static IPs to PC1, PC2, and Server1 per the addressing table above.
+| | Packet Tracer | CML | EVE-NG |
+|---|---|---|---|
+| Routers | 2911 | IOSv | vIOS (or IOL, see note) |
+| Switches | 2960 | Unmanaged switch | Network (bridge) object or vIOS-L2 |
+| Servers and PCs | Server, PC | Alpine | Any Linux node |
+| Setup | Build it yourself (below) | Import `topology.cml.yml`: everything is pre-configured | Build it yourself (below) |
 
-1.2 Verify that PC1 can ping Server1 (192.168.2.100). This is the unrestricted baseline.
+### Option A: CML
 
-1.3 Verify PC1 can ping PC2.
+1. In CML, **Import** `topology.cml.yml`, then **Start** the lab.
+2. Routing, addresses and the server services are already configured. Hosts log in with `cisco` / `cisco`.
+3. Skip to the **baseline check**.
 
-### Task 2 — Standard ACL (Restrict Management Access)
+### Option B: EVE-NG
 
-2.1 On R1, create a numbered standard ACL (ACL 10) that permits only PC1 (192.168.1.10) to access the router via VTY lines. All other sources should be denied.
+1. Add the 11 nodes from the table above and cable them as in the **Cables** table below (on vIOS the port names
+   match). With an unmanaged Network object as the switch, connect the router and the hosts to it.
+2. Paste the **router configs** below into R1, R2 and R3.
+3. On each Linux host, run the commands from **Linux host setup** below.
 
-2.2 Apply ACL 10 to R1's VTY lines (lines 0 through 4) in the **inbound** direction.
+**IOL note:** IOL names its ports Ethernet0/0, 0/1, 0/2. Replace `GigabitEthernet0/x` with `Ethernet0/x` in the
+router configs and in your ACL commands.
 
-2.3 Attempt to Telnet to R1 from PC1 and from PC2. Record the results.
+### Option C: Packet Tracer
 
-2.4 Run `show access-lists 10` on R1 and note the match counts.
+Build it with the tables below: devices, cables, end-device addressing, router configs.
 
-### Task 3 — Extended ACL (Traffic Filtering)
+| Device | Packet Tracer model |
+|---|---|
+| R1, R2, R3 | Network Devices > Routers > **2911** |
+| SW1, SW12, SW13 | Network Devices > Switches > **2960** |
+| Server1, Server2 | End Devices > **Server** |
+| Larry, Bob, Jerry | End Devices > **PC** |
 
-3.1 Create numbered extended ACL 110 on R1 with the following policy:
-   - **Permit** HTTP (TCP port 80) from the 192.168.1.0/24 network to Server1 (192.168.2.100)
-   - **Permit** ICMP from 192.168.1.0/24 to any destination
-   - **Deny** all other traffic from 192.168.1.0/24 to the 192.168.2.0/24 network
-   - **Permit** any other traffic (implicit or explicit)
+### Cables
 
-3.2 Apply ACL 110 inbound on R1 GE0/0 (the inside interface).
+| From | To | Cable |
+|---|---|---|
+| R1 Gi0/1 | R2 Gi0/1 | Copper Cross-Over |
+| R1 Gi0/2 | R3 Gi0/1 | Copper Cross-Over |
+| R2 Gi0/2 | R3 Gi0/2 | Copper Cross-Over |
+| R1 Gi0/0 | SW1 Gi0/1 | Copper Straight-Through |
+| R2 Gi0/0 | SW12 Gi0/1 | Copper Straight-Through |
+| R3 Gi0/0 | SW13 Gi0/1 | Copper Straight-Through |
+| Server1, Server2 | SW1 Fa0/1, Fa0/2 | Copper Straight-Through |
+| Larry | SW12 Fa0/1 | Copper Straight-Through |
+| Bob, Jerry | SW13 Fa0/1, Fa0/2 | Copper Straight-Through |
 
-3.3 Test the ACL:
-   - From PC1, ping Server1 — should succeed (ICMP permitted)
-   - From PC1, attempt to reach Server1 on TCP port 80 (e.g., `wget http://192.168.2.100`) — should be permitted
-   - From PC1, attempt SSH or any other TCP connection to Server1 — should be denied
+The switches need no configuration. (In CML and EVE-NG with Linux hosts, the host port is `eth0`.)
 
-3.4 Run `show access-lists 110` and confirm the correct rules are matching.
+### End-device addressing
 
-### Task 4 — Named ACL
+Packet Tracer: Desktop > IP Configuration > Static. All masks are 255.255.255.0.
 
-4.1 Remove ACL 110 from R1 GE0/0.
+| Device | IP address | Default gateway |
+|---|---|---|
+| Server1 | 172.16.1.100 | 172.16.1.1 |
+| Server2 | 172.16.1.102 | 172.16.1.1 |
+| Larry | 172.16.2.10 | 172.16.2.1 |
+| Bob | 172.16.3.10 | 172.16.3.1 |
+| Jerry | 172.16.3.9 | 172.16.3.1 |
 
-4.2 Create a named extended ACL called `INSIDE-TO-SERVER` with the same policy as Task 3.
+Packet Tracer: on both servers, check that **Services > HTTP** and **Services > FTP** are on (they are by default).
 
-4.3 Apply it inbound on R1 GE0/0.
+### Linux host setup (EVE-NG; CML already has this)
 
-4.4 Verify the same behaviour as Task 3. Run `show ip access-lists INSIDE-TO-SERVER`.
+Run as root on each host, with that host's own address and gateway from the table above:
+```
+ip address add 172.16.3.10/24 dev eth0
+ip link set dev eth0 up
+ip route add default via 172.16.3.1
+```
+On Server1 and Server2 only, also start a web page on TCP 80 and an FTP-style listener on TCP 21:
+```
+mkdir -p /tmp/www && echo "Server1 web page" > /tmp/www/index.html
+httpd -p 80 -h /tmp/www    # Alpine; on other Linux use: python3 -m http.server 80 --directory /tmp/www &
+(while true; do echo "220 Server1 FTP ready" | nc -l -p 21; done) &
+```
 
-4.5 Add a new entry to the named ACL permitting HTTPS (TCP 443) without rewriting the entire ACL. Verify the new entry is inserted correctly using sequence numbers.
+### Router configuration
 
-### Task 5 — Device Hardening & SSH
+Answer `no` to the initial configuration dialog if a router asks, then paste each block into the router's CLI.
 
-5.1 On both R1 and R2, configure:
-   - Local username `netadmin` with privilege 15 and a strong encrypted password
-   - `service password-encryption`
-   - A MOTD banner warning that unauthorised access is prohibited
-   - Disable Telnet on VTY lines — allow SSH only
+**R1**
+```
+enable
+configure terminal
+hostname R1
+no ip domain-lookup
+interface GigabitEthernet0/0
+ description MAIN-SITE-LAN
+ ip address 172.16.1.1 255.255.255.0
+ no shutdown
+interface GigabitEthernet0/1
+ description to R2
+ ip address 172.16.12.1 255.255.255.252
+ no shutdown
+interface GigabitEthernet0/2
+ description to R3
+ ip address 172.16.13.1 255.255.255.252
+ no shutdown
+ip route 172.16.2.0 255.255.255.0 172.16.12.2
+ip route 172.16.3.0 255.255.255.0 172.16.13.2
+end
+copy running-config startup-config
+```
 
-5.2 Configure the domain name `lab.local` and generate a 2048-bit RSA key pair on both routers.
+**R2**
+```
+enable
+configure terminal
+hostname R2
+no ip domain-lookup
+interface GigabitEthernet0/0
+ description LARRY-LAN
+ ip address 172.16.2.1 255.255.255.0
+ no shutdown
+interface GigabitEthernet0/1
+ description to R1
+ ip address 172.16.12.2 255.255.255.252
+ no shutdown
+interface GigabitEthernet0/2
+ description to R3
+ ip address 172.16.23.1 255.255.255.252
+ no shutdown
+ip route 172.16.1.0 255.255.255.0 172.16.12.1
+ip route 172.16.3.0 255.255.255.0 172.16.23.2
+end
+copy running-config startup-config
+```
 
-5.3 Set `ip ssh version 2` and set the authentication timeout to 60 seconds.
+**R3**
+```
+enable
+configure terminal
+hostname R3
+no ip domain-lookup
+interface GigabitEthernet0/0
+ description BOB-JERRY-LAN
+ ip address 172.16.3.1 255.255.255.0
+ no shutdown
+interface GigabitEthernet0/1
+ description to R1
+ ip address 172.16.13.2 255.255.255.252
+ no shutdown
+interface GigabitEthernet0/2
+ description to R2
+ ip address 172.16.23.2 255.255.255.252
+ no shutdown
+ip route 172.16.1.0 255.255.255.0 172.16.13.1
+ip route 172.16.2.0 255.255.255.0 172.16.23.1
+end
+copy running-config startup-config
+```
 
-5.4 Test SSH access from PC1 to R1 using the netadmin credentials. Verify Telnet is rejected.
+### Baseline check (before any ACLs)
 
-5.5 Run `show ip ssh` and `show ssh` on R1 to verify the SSH session.
+Everything should reach everything. Don't start Part 2 until all five pass.
+
+| From | Check | Packet Tracer | CML / EVE-NG (Linux host) | Expect |
+|---|---|---|---|---|
+| Bob | FTP to Server1 | Command Prompt: `ftp 172.16.1.100` (user `cisco`, password `cisco`), then `quit` | `nc -w 3 172.16.1.100 21` | `ftp>` prompt, or the `220` banner |
+| Bob | Web to Server1 | Web Browser: `http://172.16.1.100` | `wget -q -O - -T 3 http://172.16.1.100` | Server1's page |
+| Larry | Web to Server1 | Web Browser: `http://172.16.1.100` | `wget -q -O - -T 3 http://172.16.1.100` | Server1's page |
+| Larry | Ping Bob | `ping 172.16.3.10` | `ping -c 3 172.16.3.10` | Replies (the first may time out while ARP resolves) |
+| Jerry | Ping Server2 | `ping 172.16.1.102` | `ping -c 3 172.16.1.102` | Replies |
+
+Use the same commands to prove the work order in Part 2. Save your lab before you start Part 2.
 
 ---
 
-## Verification Checklist
+## Part 2: Work order
 
-- [ ] Standard ACL 10: PC1 VTY access permitted, PC2 denied
-- [ ] Extended ACL (named): ICMP and HTTP permitted, other protocols denied
-- [ ] Named ACL visible with `show ip access-lists`
-- [ ] HTTPS entry added to named ACL using sequence number
-- [ ] SSH working from PC1 to R1
-- [ ] Telnet rejected on all VTY lines
-- [ ] `show ip ssh` confirms version 2
+1. Bob can't use FTP on any main-site server. Everything else Bob does keeps working.
+2. Larry can't open Server1's website. Larry can still use Server2's website and FTP on both servers.
+3. Jerry can't reach anything at the main site.
+4. Everyone else keeps full access.
+
+## Questions
+
+1. Which ACL type did you use for each requirement, and why?
+2. Which router, interface and direction did you pick for each one? Why there?
+3. Prove each requirement with a test from the right host. What did `show ip access-lists` show after the tests?
+4. What would happen to the other hosts if you left out the last line of each ACL?
+
+Record your work in [`solution.md`](solution.md).

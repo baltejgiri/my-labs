@@ -1,169 +1,525 @@
-lab:
-  title: "CCNA Lab 08 — ACLs & Device Security"
-  description: "Configure standard, extended, and named ACLs. Harden device access with SSH and AAA."
-  notes: "All IPs are pre-configured. Focus on ACL logic and device hardening."
-  timestamp: 1750000000.0
-  version: 0.0.3
-
+annotations: []
+smart_annotations: []
 nodes:
-  - id: n0
+  - boot_disk_size: null
+    configuration:
+      - name: ios_config.txt
+        content: |-
+          hostname R1
+          no ip domain-lookup
+          !
+          interface GigabitEthernet0/0
+           description MAIN-SITE-LAN
+           ip address 172.16.1.1 255.255.255.0
+           no shutdown
+          !
+          interface GigabitEthernet0/1
+           description to R2
+           ip address 172.16.12.1 255.255.255.252
+           no shutdown
+          !
+          interface GigabitEthernet0/2
+           description to R3
+           ip address 172.16.13.1 255.255.255.252
+           no shutdown
+          !
+          ip route 172.16.2.0 255.255.255.0 172.16.12.2
+          ip route 172.16.3.0 255.255.255.0 172.16.13.2
+          !
+          line con 0
+           logging synchronous
+          !
+          end
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n0
+    image_definition: null
     label: R1
     node_definition: iosv
+    parameters: {}
+    ram: null
+    tags: []
     x: 0
     y: 0
-    configuration: |
-      hostname R1
-      no ip domain-lookup
-      !
-      interface GigabitEthernet0/0
-       description Inside LAN
-       ip address 192.168.1.1 255.255.255.0
-       no shutdown
-      !
-      interface GigabitEthernet0/1
-       description Link to R2
-       ip address 10.0.12.1 255.255.255.252
-       no shutdown
-      !
-      ip route 192.168.2.0 255.255.255.0 10.0.12.2
-      !
-      line con 0
-       logging synchronous
-      !
-      end
-    tags: []
-    boot_disk_size: null
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+  - boot_disk_size: null
+    configuration:
+      - name: ios_config.txt
+        content: |-
+          hostname R2
+          no ip domain-lookup
+          !
+          interface GigabitEthernet0/0
+           description LARRY-LAN
+           ip address 172.16.2.1 255.255.255.0
+           no shutdown
+          !
+          interface GigabitEthernet0/1
+           description to R1
+           ip address 172.16.12.2 255.255.255.252
+           no shutdown
+          !
+          interface GigabitEthernet0/2
+           description to R3
+           ip address 172.16.23.1 255.255.255.252
+           no shutdown
+          !
+          ip route 172.16.1.0 255.255.255.0 172.16.12.1
+          ip route 172.16.3.0 255.255.255.0 172.16.23.2
+          !
+          line con 0
+           logging synchronous
+          !
+          end
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
+    id: n1
     image_definition: null
-    ram: null
-
-  - id: n1
     label: R2
     node_definition: iosv
-    x: 300
-    y: 0
-    configuration: |
-      hostname R2
-      no ip domain-lookup
-      !
-      interface GigabitEthernet0/0
-       description Link to R1
-       ip address 10.0.12.2 255.255.255.252
-       no shutdown
-      !
-      interface GigabitEthernet0/1
-       description Server LAN
-       ip address 192.168.2.1 255.255.255.0
-       no shutdown
-      !
-      ip route 192.168.1.0 255.255.255.0 10.0.12.1
-      !
-      line con 0
-       logging synchronous
-      !
-      end
+    parameters: {}
+    ram: null
     tags: []
-    boot_disk_size: null
+    x: 250
+    y: -150
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+  - boot_disk_size: null
+    configuration:
+      - name: ios_config.txt
+        content: |-
+          hostname R3
+          no ip domain-lookup
+          !
+          interface GigabitEthernet0/0
+           description BOB-JERRY-LAN
+           ip address 172.16.3.1 255.255.255.0
+           no shutdown
+          !
+          interface GigabitEthernet0/1
+           description to R1
+           ip address 172.16.13.2 255.255.255.252
+           no shutdown
+          !
+          interface GigabitEthernet0/2
+           description to R2
+           ip address 172.16.23.2 255.255.255.252
+           no shutdown
+          !
+          ip route 172.16.1.0 255.255.255.0 172.16.13.1
+          ip route 172.16.2.0 255.255.255.0 172.16.23.1
+          !
+          line con 0
+           logging synchronous
+          !
+          end
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
+    id: n2
     image_definition: null
+    label: R3
+    node_definition: iosv
+    parameters: {}
     ram: null
-
-  - id: n2
+    tags: []
+    x: 250
+    y: 150
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n3
+    image_definition: null
     label: SW1
-    node_definition: iosvl2
-    x: -150
-    y: 250
-    configuration: |
-      hostname SW1
-      no ip domain-lookup
-      !
-      line con 0
-       logging synchronous
-      !
-      end
+    node_definition: unmanaged_switch
+    parameters: {}
+    ram: null
     tags: []
-    boot_disk_size: null
+    x: -200
+    y: 0
+    interfaces:
+      - id: i0
+        label: port0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: port1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i2
+        label: port2
+        mac_address: null
+        type: physical
+        slot: 2
+  - boot_disk_size: null
+    configuration: []
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
+    id: n4
     image_definition: null
+    label: SW12
+    node_definition: unmanaged_switch
+    parameters: {}
     ram: null
-
-  - id: n3
-    label: PC1
-    node_definition: alpine
-    x: -300
-    y: 450
-    configuration: ""
     tags: []
-    boot_disk_size: null
+    x: 450
+    y: -150
+    interfaces:
+      - id: i0
+        label: port0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: port1
+        mac_address: null
+        type: physical
+        slot: 1
+  - boot_disk_size: null
+    configuration: []
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
+    id: n5
     image_definition: null
+    label: SW13
+    node_definition: unmanaged_switch
+    parameters: {}
     ram: null
-
-  - id: n4
-    label: PC2
-    node_definition: alpine
-    x: -50
-    y: 450
-    configuration: ""
     tags: []
-    boot_disk_size: null
+    x: 450
+    y: 150
+    interfaces:
+      - id: i0
+        label: port0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: port1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i2
+        label: port2
+        mac_address: null
+        type: physical
+        slot: 2
+  - boot_disk_size: null
+    configuration:
+      - name: node.cfg
+        content: |-
+          # this is a shell script which will be sourced at boot
+          hostname Server1
+          # configurable user account
+          USERNAME=cisco
+          PASSWORD=cisco
+          ip address add 172.16.1.100/24 dev eth0
+          ip link set dev eth0 up
+          ip route add default via 172.16.1.1
+          # lab services: a web page on TCP 80 and an FTP-style banner on TCP 21
+          mkdir -p /tmp/www && echo "Server1 web page" > /tmp/www/index.html
+          httpd -p 80 -h /tmp/www
+          (while true; do echo "220 Server1 FTP ready" | nc -l -p 21; done) &
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
+    id: n6
     image_definition: null
-    ram: null
-
-  - id: n5
     label: Server1
     node_definition: alpine
-    x: 400
-    y: 250
-    configuration: ""
+    parameters: {}
+    ram: null
     tags: []
-    boot_disk_size: null
+    x: -400
+    y: -80
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration:
+      - name: node.cfg
+        content: |-
+          # this is a shell script which will be sourced at boot
+          hostname Server2
+          # configurable user account
+          USERNAME=cisco
+          PASSWORD=cisco
+          ip address add 172.16.1.102/24 dev eth0
+          ip link set dev eth0 up
+          ip route add default via 172.16.1.1
+          # lab services: a web page on TCP 80 and an FTP-style banner on TCP 21
+          mkdir -p /tmp/www && echo "Server2 web page" > /tmp/www/index.html
+          httpd -p 80 -h /tmp/www
+          (while true; do echo "220 Server2 FTP ready" | nc -l -p 21; done) &
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
+    id: n7
     image_definition: null
+    label: Server2
+    node_definition: alpine
+    parameters: {}
     ram: null
-
+    tags: []
+    x: -400
+    y: 80
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration:
+      - name: node.cfg
+        content: |-
+          # this is a shell script which will be sourced at boot
+          hostname Larry
+          # configurable user account
+          USERNAME=cisco
+          PASSWORD=cisco
+          ip address add 172.16.2.10/24 dev eth0
+          ip link set dev eth0 up
+          ip route add default via 172.16.2.1
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n8
+    image_definition: null
+    label: Larry
+    node_definition: alpine
+    parameters: {}
+    ram: null
+    tags: []
+    x: 650
+    y: -150
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration:
+      - name: node.cfg
+        content: |-
+          # this is a shell script which will be sourced at boot
+          hostname Bob
+          # configurable user account
+          USERNAME=cisco
+          PASSWORD=cisco
+          ip address add 172.16.3.10/24 dev eth0
+          ip link set dev eth0 up
+          ip route add default via 172.16.3.1
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n9
+    image_definition: null
+    label: Bob
+    node_definition: alpine
+    parameters: {}
+    ram: null
+    tags: []
+    x: 650
+    y: 100
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration:
+      - name: node.cfg
+        content: |-
+          # this is a shell script which will be sourced at boot
+          hostname Jerry
+          # configurable user account
+          USERNAME=cisco
+          PASSWORD=cisco
+          ip address add 172.16.3.9/24 dev eth0
+          ip link set dev eth0 up
+          ip route add default via 172.16.3.1
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n10
+    image_definition: null
+    label: Jerry
+    node_definition: alpine
+    parameters: {}
+    ram: null
+    tags: []
+    x: 650
+    y: 220
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
 links:
   - id: l0
     n1: n0
-    i1: 0
-    n2: n2
-    i2: 0
+    n2: n1
+    i1: i2
+    i2: i2
+    conditioning: {}
+    label: R1-GigabitEthernet0/1<->R2-GigabitEthernet0/1
   - id: l1
     n1: n0
-    i1: 1
-    n2: n1
-    i2: 0
+    n2: n2
+    i1: i3
+    i2: i2
+    conditioning: {}
+    label: R1-GigabitEthernet0/2<->R3-GigabitEthernet0/1
   - id: l2
-    n1: n2
-    i1: 1
-    n2: n3
-    i2: 0
+    n1: n1
+    n2: n2
+    i1: i3
+    i2: i3
+    conditioning: {}
+    label: R2-GigabitEthernet0/2<->R3-GigabitEthernet0/2
   - id: l3
-    n1: n2
-    i1: 2
-    n2: n4
-    i2: 0
+    n1: n0
+    n2: n3
+    i1: i1
+    i2: i0
+    conditioning: {}
+    label: R1-GigabitEthernet0/0<->SW1-port0
   - id: l4
     n1: n1
-    i1: 1
+    n2: n4
+    i1: i1
+    i2: i0
+    conditioning: {}
+    label: R2-GigabitEthernet0/0<->SW12-port0
+  - id: l5
+    n1: n2
     n2: n5
-    i2: 0
+    i1: i1
+    i2: i0
+    conditioning: {}
+    label: R3-GigabitEthernet0/0<->SW13-port0
+  - id: l6
+    n1: n6
+    n2: n3
+    i1: i0
+    i2: i1
+    conditioning: {}
+    label: Server1-eth0<->SW1-port1
+  - id: l7
+    n1: n7
+    n2: n3
+    i1: i0
+    i2: i2
+    conditioning: {}
+    label: Server2-eth0<->SW1-port2
+  - id: l8
+    n1: n8
+    n2: n4
+    i1: i0
+    i2: i1
+    conditioning: {}
+    label: Larry-eth0<->SW12-port1
+  - id: l9
+    n1: n9
+    n2: n5
+    i1: i0
+    i2: i1
+    conditioning: {}
+    label: Bob-eth0<->SW13-port1
+  - id: l10
+    n1: n10
+    n2: n5
+    i1: i0
+    i2: i2
+    conditioning: {}
+    label: Jerry-eth0<->SW13-port2
+lab:
+  description: Odom CCNA Vol 2 ch 2-3 (Figure 3-8 topology). Bob, Larry and Jerry
+    vs the main-site servers.
+  notes: See README.md in my-labs/cisco/lab08-acls-security. Routing is pre-configured;
+    no ACLs.
+  title: 'CCNA Lab 08: IPv4 ACLs (standard, extended, named)'
+  version: 0.3.0

@@ -1,32 +1,12 @@
-# Solution — Lab 08: ACLs & Device Security
+# Solution: Lab 08, IPv4 ACLs
 
-> Fill in this workbook as you complete each task.
-
----
-
-## Task 1 — Baseline Connectivity
-
-**PC1 → Server1 ping (before ACLs):**
-
-```
-
-```
+> Fill in this workbook as you complete each requirement.
 
 ---
 
-## Task 2 — Standard ACL
+## Baseline (before ACLs)
 
-**Commands on R1:**
-
-```
-
-```
-
-**Telnet from PC1 (result):**
-
-**Telnet from PC2 (result):**
-
-**`show access-lists 10` match counts:**
+**Results of the five baseline tests:**
 
 ```
 
@@ -34,23 +14,17 @@
 
 ---
 
-## Task 3 — Extended ACL 110
+## Requirement 1: Bob and FTP
 
-**Commands on R1:**
+**ACL type, router, interface and direction (and why):**
+
+**Commands:**
 
 ```
 
 ```
 
-**Test results:**
-
-| Test | Expected | Actual |
-|------|----------|--------|
-| PC1 → Server1 ICMP | Permit | |
-| PC1 → Server1 HTTP (80) | Permit | |
-| PC1 → Server1 SSH (22) | Deny | |
-
-**`show access-lists 110`:**
+**Tests (Bob FTP to both servers, Bob web to Server1):**
 
 ```
 
@@ -58,21 +32,17 @@
 
 ---
 
-## Task 4 — Named ACL
+## Requirement 2: Larry and Server1's website
 
-**Commands (named ACL creation):**
+**ACL type, router, interface and direction (and why):**
 
-```
-
-```
-
-**Adding HTTPS entry with sequence number:**
+**Commands:**
 
 ```
 
 ```
 
-**`show ip access-lists INSIDE-TO-SERVER`:**
+**Tests (Larry web to Server1 and Server2, Larry FTP to Server1):**
 
 ```
 
@@ -80,26 +50,40 @@
 
 ---
 
-## Task 5 — Device Hardening & SSH
+## Requirement 3: Jerry and the main site
 
-**Commands on R1:**
+**ACL type, router, interface and direction (and why):**
 
-```
-
-```
-
-**`show ip ssh`:**
+**Commands:**
 
 ```
 
 ```
 
-**SSH test from PC1 — result:**
+**Tests (Jerry to the main site, Jerry to Larry):**
 
-**Telnet test — result (should be refused):**
+```
+
+```
 
 ---
 
-## Lessons Learned
+## Verification
 
-## Troubleshooting Notes
+**`show ip access-lists` on R1, R2 and R3 (match counts):**
+
+```
+
+```
+
+---
+
+## Questions
+
+1. **Which ACL type for each requirement, and why?**
+
+2. **Which router, interface and direction for each, and why there?**
+
+3. **What did the match counts prove?**
+
+4. **What happens to the other hosts without the last line of each ACL?**
