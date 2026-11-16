@@ -22,15 +22,7 @@ Chapter 3 (Advanced IPv4 Access Control Lists). The topology and host names foll
 
 ## Topology
 
-```
-                                      Gi0/1   Gi0/1
- Server1 .1.100 --+                 +-------- R2 Gi0/0 --- SW12 --- Larry .2.10
-                  SW1 --- Gi0/0 R1 -+          | Gi0/2
- Server2 .1.102 --+                 |          |
-                                    |          | Gi0/2
-                                    +-------- R3 Gi0/0 --- SW13 --+- Bob   .3.10
-                                      Gi0/2   Gi0/1               +- Jerry .3.9
-```
+![Lab 08 topology: R1 main site with Server1 and Server2, R2 branch with Larry, R3 branch with Bob and Jerry](topology.png)
 
 | Site | Hosts | Subnet |
 |---|---|---|
