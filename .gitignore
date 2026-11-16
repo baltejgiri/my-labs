@@ -1,0 +1,8 @@
+# containerlab runtime output (keys, certs, logs, shell history)
+clab-*/
+.clab*/
+
+# secrets
+.env
+*.key
+*.pem
